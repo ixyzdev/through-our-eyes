@@ -1,65 +1,468 @@
-import Image from "next/image";
+'use client'
+
+import { useEffect, useMemo, useState } from 'react'
+import type { LucideIcon } from 'lucide-react'
+import {
+  ArrowRight,
+  BookMarked,
+  BookOpenCheck,
+  Bookmark,
+  BookmarkPlus,
+  CalendarClock,
+  Check,
+  Compass,
+  Headphones,
+  History,
+  Loader2,
+  NotebookPen,
+  Sparkles
+} from 'lucide-react'
+
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import {
+  fetchDashboardData,
+  navShortcuts,
+  type DashboardData,
+  type ReadingStat,
+  type SessionPlan
+} from '@/lib/dashboard'
+
+type NavigationItem = {
+  id: string
+  label: string
+  icon: LucideIcon
+  count?: string
+}
+
+const navigation: NavigationItem[] = [
+  { id: 'resumen', label: 'Resumen', icon: Compass },
+  { id: 'memorias', label: 'Recuerdos', icon: History, count: '3' },
+  { id: 'sesiones', label: 'Sesiones', icon: CalendarClock, count: '2' },
+  { id: 'listas', label: 'Listas & rituales', icon: BookmarkPlus },
+  { id: 'audio', label: 'Audiolibros', icon: Headphones },
+  { id: 'notas', label: 'Notas rápidas', icon: NotebookPen }
+]
+
+const sessionStatusStyles: Record<
+  SessionPlan['status'],
+  { label: string; badgeClass: string }
+> = {
+  active: {
+    label: 'En progreso',
+    badgeClass: 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-200'
+  },
+  scheduled: {
+    label: 'Agendado',
+    badgeClass: 'bg-blue-500/10 text-blue-700 dark:text-blue-200'
+  },
+  completed: {
+    label: 'Completado',
+    badgeClass: 'bg-neutral-800 text-neutral-50'
+  }
+}
+
+function Sidebar() {
+  return (
+    <aside className="border-border/70 bg-card/80 w-full max-w-[260px] space-y-8 rounded-3xl border p-6 shadow-[0_20px_80px_-40px_rgb(15,23,42,0.35)] backdrop-blur lg:sticky lg:top-8">
+      <div className="space-y-2">
+        <p className="text-muted-foreground text-xs font-semibold tracking-[0.18em] uppercase">
+          Navegación
+        </p>
+        <nav className="space-y-1">
+          {navigation.map((item) => (
+            <button
+              key={item.id}
+              className="group text-muted-foreground hover:bg-muted/70 hover:text-foreground flex w-full items-center justify-between rounded-2xl px-3 py-2 text-sm font-medium transition"
+            >
+              <span className="flex items-center gap-3">
+                <item.icon className="text-primary/80 group-hover:text-primary h-4 w-4" />
+                {item.label}
+              </span>
+              {item.count ? (
+                <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs font-semibold">
+                  {item.count}
+                </span>
+              ) : null}
+            </button>
+          ))}
+        </nav>
+      </div>
+      <div className="from-primary/10 via-primary/5 shadow-primary/10 space-y-3 rounded-2xl bg-gradient-to-br to-emerald-50 p-4 shadow-inner">
+        <div className="flex items-center gap-3">
+          <div className="bg-primary text-primary-foreground shadow-primary/30 flex h-11 w-11 items-center justify-center rounded-2xl shadow-lg">
+            <Sparkles className="h-5 w-5" />
+          </div>
+          <div>
+            <p className="text-sm font-semibold">Recuerdos activos</p>
+            <p className="text-muted-foreground text-xs">
+              Captura ideas y vuelve a ellas en segundos.
+            </p>
+          </div>
+        </div>
+        <Button className="w-full">Crear recuerdo</Button>
+      </div>
+      <div className="space-y-2">
+        <p className="text-muted-foreground text-xs font-semibold tracking-[0.18em] uppercase">
+          Atajos
+        </p>
+        <div className="grid grid-cols-2 gap-2">
+          {navShortcuts.map(({ label, key, icon: Icon }) => (
+            <Card
+              key={label}
+              className="border-border/70 bg-card/60 flex items-center gap-2 border-dashed p-3"
+            >
+              <Icon className="text-primary h-4 w-4" />
+              <div className="flex flex-1 items-center justify-between text-xs font-semibold">
+                <span>{label}</span>
+                <span className="bg-muted text-muted-foreground rounded-md px-2 py-1 text-[11px] tracking-wide uppercase">
+                  {key}
+                </span>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </aside>
+  )
+}
+
+function StatCard({ stat }: { stat: ReadingStat }) {
+  const trendColor =
+    stat.trend === 'up'
+      ? 'text-emerald-600'
+      : stat.trend === 'down'
+        ? 'text-red-500'
+        : 'text-muted-foreground'
+
+  return (
+    <Card className="border-border/70 bg-card/80 p-4 shadow-sm backdrop-blur">
+      <div className="flex items-center justify-between">
+        <p className="text-muted-foreground text-sm">{stat.label}</p>
+        <Badge
+          variant="outline"
+          className="bg-muted/40 flex items-center gap-2 text-[11px] tracking-wide uppercase"
+        >
+          {stat.trend === 'up'
+            ? 'Mejorando'
+            : stat.trend === 'down'
+              ? 'Bajando'
+              : 'Estable'}
+          {stat.trend === 'up' ? (
+            <ArrowRight className="h-3 w-3 rotate-90 text-emerald-600" />
+          ) : stat.trend === 'down' ? (
+            <ArrowRight className="h-3 w-3 -rotate-90 text-red-500" />
+          ) : (
+            <ArrowRight className="text-muted-foreground h-3 w-3" />
+          )}
+        </Badge>
+      </div>
+      <div className="mt-4 flex items-end justify-between">
+        <p className="text-3xl font-semibold">{stat.value}</p>
+        <span className={`text-xs font-semibold ${trendColor}`}>
+          {stat.delta}
+        </span>
+      </div>
+    </Card>
+  )
+}
+
+function SectionHeader({
+  title,
+  description,
+  icon: Icon
+}: {
+  title: string
+  description: string
+  icon: LucideIcon
+}) {
+  return (
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-2xl">
+          <Icon className="h-5 w-5" />
+        </div>
+        <div>
+          <p className="text-lg font-semibold">{title}</p>
+          <p className="text-muted-foreground text-sm">{description}</p>
+        </div>
+      </div>
+      <Button variant="outline" size="sm">
+        Ver todo
+      </Button>
+    </div>
+  )
+}
 
 export default function Home() {
+  const [data, setData] = useState<DashboardData | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    let active = true
+    fetchDashboardData().then((payload) => {
+      if (!active) return
+      setData(payload)
+      setIsLoading(false)
+    })
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const loadingMemories = useMemo(
+    () => Array.from({ length: 3 }).map((_, index) => index),
+    []
+  )
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <div className="text-foreground relative min-h-screen overflow-hidden bg-gradient-to-b from-amber-50 via-white to-blue-50 antialiased dark:from-zinc-950 dark:via-zinc-900 dark:to-black">
+      <div className="from-primary/15 pointer-events-none absolute inset-x-0 top-0 h-80 bg-gradient-to-b via-transparent to-transparent blur-3xl" />
+      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-10 lg:flex-row lg:items-start lg:px-8">
+        <Sidebar />
+
+        <main className="flex-1 space-y-10">
+          <header className="border-border/70 bg-card/90 flex flex-col gap-6 rounded-3xl border p-6 shadow-[0_20px_80px_-40px_rgb(15,23,42,0.35)] backdrop-blur">
+            <div className="flex items-center justify-between">
+              <div className="space-y-2">
+                <p className="text-primary text-sm font-semibold">Dashboard</p>
+                <h1 className="text-3xl leading-tight font-semibold">
+                  Hola, Sofía. Tus lecturas están sincronizadas.
+                </h1>
+                <p className="text-muted-foreground text-sm">
+                  Seguimos tus rituales, audiolibros y notas para mantener viva
+                  tu biblioteca.
+                </p>
+              </div>
+              <Button size="lg" className="gap-2">
+                Nuevo libro
+                <Bookmark className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {(isLoading
+                ? Array.from({ length: 4 })
+                : (data?.stats ?? [])
+              ).map((stat, index) =>
+                stat ? (
+                  <StatCard key={stat.id} stat={stat} />
+                ) : (
+                  <Card
+                    key={`loading-${index}`}
+                    className="border-border/70 bg-muted/40 h-full border-dashed p-4"
+                  >
+                    <div className="flex h-full flex-col justify-between gap-4">
+                      <div className="space-y-2">
+                        <div className="bg-muted-foreground/10 h-3 w-24 rounded-full" />
+                        <div className="bg-muted-foreground/10 h-8 w-16 rounded-lg" />
+                      </div>
+                      <div className="bg-muted-foreground/10 h-3 w-28 rounded-full" />
+                    </div>
+                  </Card>
+                )
+              )}
+            </div>
+          </header>
+
+          <section id="memorias" className="space-y-4">
+            <SectionHeader
+              title="Recuerdos recientes"
+              description="Subrayados, notas y fragmentos listos para compartir."
+              icon={BookOpenCheck}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+            <div className="grid gap-4 md:grid-cols-2">
+              {(isLoading ? loadingMemories : (data?.memories ?? [])).map(
+                (memory, index) =>
+                  memory && typeof memory === 'object' ? (
+                    <Card
+                      key={memory.id}
+                      className="border-border/70 bg-card/90 p-4 shadow-sm backdrop-blur"
+                    >
+                      <div
+                        className={`flex items-center gap-3 rounded-2xl bg-gradient-to-br ${memory.color} px-3 py-2`}
+                      >
+                        <Badge variant="success" className="gap-2">
+                          <Check className="h-4 w-4" />
+                          {memory.mood}
+                        </Badge>
+                        <span className="text-muted-foreground text-xs">
+                          {memory.createdAt}
+                        </span>
+                      </div>
+                      <div className="mt-4 space-y-2">
+                        <p className="text-primary/80 text-sm font-semibold">
+                          {memory.bookTitle}
+                        </p>
+                        <p className="text-lg leading-relaxed">
+                          {memory.snippet}
+                        </p>
+                      </div>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {memory.tags.map((tag) => (
+                          <Badge key={tag} variant="outline">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                    </Card>
+                  ) : (
+                    <Card
+                      key={`memory-loading-${index}`}
+                      className="border-border/70 bg-muted/40 h-full border-dashed p-4"
+                    >
+                      <div className="flex h-full flex-col justify-between gap-4">
+                        <div className="bg-muted-foreground/10 h-6 w-28 rounded-lg" />
+                        <div className="space-y-2">
+                          <div className="bg-muted-foreground/10 h-4 w-full rounded-lg" />
+                          <div className="bg-muted-foreground/10 h-4 w-3/4 rounded-lg" />
+                        </div>
+                        <div className="flex gap-2">
+                          <div className="bg-muted-foreground/10 h-6 w-16 rounded-full" />
+                          <div className="bg-muted-foreground/10 h-6 w-16 rounded-full" />
+                        </div>
+                      </div>
+                    </Card>
+                  )
+              )}
+            </div>
+          </section>
+
+          <section id="sesiones" className="space-y-4">
+            <SectionHeader
+              title="Sesiones y rituales"
+              description="Prepara tus bloques de enfoque con alarmas suaves y notas rápidas."
+              icon={CalendarClock}
+            />
+            <div className="grid gap-4 lg:grid-cols-3">
+              {(isLoading
+                ? Array.from({ length: 3 })
+                : (data?.sessions ?? [])
+              ).map((session, index) =>
+                session && typeof session === 'object' ? (
+                  <Card
+                    key={session.id}
+                    className="border-border/70 bg-card/90 p-4 shadow-sm backdrop-blur"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <p className="text-muted-foreground text-sm">
+                          {session.focus}
+                        </p>
+                        <p className="text-lg font-semibold">{session.title}</p>
+                      </div>
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${sessionStatusStyles[session.status].badgeClass}`}
+                      >
+                        {sessionStatusStyles[session.status].label}
+                      </span>
+                    </div>
+                    <div className="text-muted-foreground mt-4 flex items-center justify-between text-sm">
+                      <span>{session.startTime}</span>
+                      <span>{session.durationMinutes} min</span>
+                    </div>
+                    <div className="bg-muted mt-3 h-2 w-full overflow-hidden rounded-full">
+                      <div
+                        className="bg-primary h-full rounded-full"
+                        style={{ width: `${session.progress}%` }}
+                      />
+                    </div>
+                    <div className="text-muted-foreground mt-3 flex items-center justify-between text-xs">
+                      <span>Progreso</span>
+                      <span>{session.progress}%</span>
+                    </div>
+                  </Card>
+                ) : (
+                  <Card
+                    key={`session-loading-${index}`}
+                    className="border-border/70 bg-muted/40 h-full border-dashed p-4"
+                  >
+                    <div className="flex h-full flex-col gap-4">
+                      <div className="bg-muted-foreground/10 h-4 w-24 rounded-lg" />
+                      <div className="bg-muted-foreground/10 h-4 w-32 rounded-lg" />
+                      <div className="bg-muted-foreground/10 h-2 w-full rounded-full" />
+                    </div>
+                  </Card>
+                )
+              )}
+            </div>
+          </section>
+
+          <section id="recomendaciones" className="space-y-4">
+            <SectionHeader
+              title="Recomendaciones personalizadas"
+              description="Basadas en tus últimos subrayados y estados de ánimo."
+              icon={Bookmark}
+            />
+            <div className="grid gap-4 md:grid-cols-2">
+              {(isLoading
+                ? Array.from({ length: 2 })
+                : (data?.recommendations ?? [])
+              ).map((rec, index) =>
+                rec && typeof rec === 'object' ? (
+                  <Card
+                    key={rec.id}
+                    className="border-border/70 bg-card/90 flex flex-col gap-3 p-4 shadow-sm backdrop-blur"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-lg font-semibold">{rec.title}</p>
+                        <p className="text-muted-foreground text-sm">
+                          {rec.author} · {rec.genre}
+                        </p>
+                      </div>
+                      <Badge variant="success" className="text-xs uppercase">
+                        Afinidad {rec.confidence}%
+                      </Badge>
+                    </div>
+                    <p className="text-muted-foreground text-sm">
+                      {rec.reason}
+                    </p>
+                    <Button variant="outline" size="sm" className="self-start">
+                      Ver detalles
+                    </Button>
+                  </Card>
+                ) : (
+                  <Card
+                    key={`rec-loading-${index}`}
+                    className="border-border/70 bg-muted/40 h-full border-dashed p-4"
+                  >
+                    <div className="space-y-3">
+                      <div className="bg-muted-foreground/10 h-5 w-40 rounded-lg" />
+                      <div className="bg-muted-foreground/10 h-3 w-32 rounded-lg" />
+                      <div className="bg-muted-foreground/10 h-4 w-full rounded-lg" />
+                    </div>
+                  </Card>
+                )
+              )}
+            </div>
+          </section>
+
+          {isLoading ? (
+            <div className="border-border/60 bg-muted/30 text-muted-foreground flex items-center gap-2 rounded-2xl border border-dashed p-4 text-sm">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Sincronizando con tu biblioteca...
+            </div>
+          ) : (
+            <Card className="border-border/70 bg-card/90 flex items-center justify-between p-5 shadow-sm backdrop-blur">
+              <div>
+                <p className="text-lg font-semibold">
+                  Sincronización completada
+                </p>
+                <p className="text-muted-foreground text-sm">
+                  Hemos guardado tus progresos y rituales. Revisa el panel si
+                  agregas nuevos libros desde el móvil.
+                </p>
+              </div>
+              <Button className="gap-2">
+                Reforzar ritual
+                <BookMarked className="h-4 w-4" />
+              </Button>
+            </Card>
+          )}
+        </main>
+      </div>
     </div>
-  );
+  )
 }

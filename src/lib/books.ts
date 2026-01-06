@@ -136,3 +136,10 @@ export async function fetchBooks(): Promise<BooksData> {
   await new Promise((resolve) => setTimeout(resolve, 500))
   return JSON.parse(JSON.stringify(booksMock))
 }
+
+export async function fetchBookById(id: string): Promise<Book | null> {
+  const data = await fetchBooks()
+  const allBooks = [...data.library, ...data.recommended]
+  const book = allBooks.find((entry) => entry.id === id)
+  return book ?? null
+}

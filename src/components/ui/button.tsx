@@ -1,8 +1,17 @@
 import * as React from 'react'
-import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
+
+function Slot({
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLElement> & { children: React.ReactElement }) {
+  return React.cloneElement(children, {
+    ...props,
+    className: cn(props.className, children.props.className)
+  })
+}
 
 const buttonVariants = cva(
   'inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/80 disabled:pointer-events-none disabled:opacity-50',

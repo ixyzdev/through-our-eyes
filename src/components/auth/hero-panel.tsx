@@ -6,8 +6,8 @@ import { Card } from '@/components/ui/card'
 const highlights = [
   {
     icon: Sparkles,
-    title: 'IA lectora',
-    description: 'Resumenes y mapas mentales listos en segundos.'
+    title: 'Lectura guiada',
+    description: 'Resúmenes y mapas mentales listos en segundos.'
   },
   {
     icon: BookmarkCheck,

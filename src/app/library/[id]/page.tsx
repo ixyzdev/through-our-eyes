@@ -28,6 +28,7 @@ import {
   type Book,
   type BookStatus
 } from '@/lib/books'
+import { getAuthorSlug } from '@/lib/authors'
 import { fetchUserLists } from '@/lib/lists'
 
 export const dynamic = 'force-dynamic'
@@ -145,7 +146,13 @@ export default async function BookDetailPage({
                   {book.title}
                 </h1>
                 <p className="text-muted-foreground text-lg">
-                  {book.author} · {book.genre}
+                  <Link
+                    href={`/authors/${getAuthorSlug(book.author)}`}
+                    className="text-foreground transition hover:text-primary"
+                  >
+                    {book.author}
+                  </Link>{' '}
+                  · {book.genre}
                 </p>
                 <p className="text-muted-foreground text-sm leading-relaxed">
                   {book.synopsis}
@@ -340,7 +347,12 @@ export default async function BookDetailPage({
                 <span className="text-muted-foreground text-xs font-semibold uppercase">
                   Autor
                 </span>
-                <span className="font-semibold">{book.author}</span>
+                <Link
+                  href={`/authors/${getAuthorSlug(book.author)}`}
+                  className="font-semibold transition hover:text-primary"
+                >
+                  {book.author}
+                </Link>
               </div>
               <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
                 <span className="text-muted-foreground text-xs font-semibold uppercase">

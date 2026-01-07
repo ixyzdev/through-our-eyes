@@ -224,9 +224,11 @@ export default async function BookDetailPage({
               </div>
 
               <div className="flex flex-wrap gap-3">
-                <Button className="gap-2">
-                  <Sparkles className="h-4 w-4" />
-                  Abrir siguiente sesión
+                <Button asChild className="gap-2">
+                  <Link href={`/library/${book.id}/read`}>
+                    <Sparkles className="h-4 w-4" />
+                    Abrir siguiente sesión
+                  </Link>
                 </Button>
                 <Button variant="outline" className="gap-2">
                   <BookmarkPlus className="h-4 w-4" />

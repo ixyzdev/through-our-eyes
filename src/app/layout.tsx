@@ -44,6 +44,12 @@ export default function RootLayout({
                   Iniciar sesión
                 </Link>
                 <Link
+                  href="/settings"
+                  className="text-muted-foreground hover:text-foreground rounded-full px-4 py-2 text-sm font-semibold transition"
+                >
+                  Configuración
+                </Link>
+                <Link
                   href="/signup"
                   className="border-border bg-primary text-primary-foreground hover:bg-primary/90 rounded-full border px-4 py-2 text-sm font-semibold shadow"
                 >

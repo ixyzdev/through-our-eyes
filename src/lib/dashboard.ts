@@ -1,4 +1,11 @@
-import { BookOpen, Clock3, Compass, Sparkles, Target } from 'lucide-react'
+import {
+  BookOpen,
+  Clock3,
+  Compass,
+  Settings,
+  Sparkles,
+  Target
+} from 'lucide-react'
 
 export type Trend = 'up' | 'down' | 'flat'
 
@@ -177,5 +184,6 @@ export const navShortcuts = [
   { label: 'Explorar', key: 'E', icon: Compass },
   { label: 'Ritual de enfoque', key: 'R', icon: Target },
   { label: 'Sesiones', key: 'S', icon: Clock3 },
-  { label: 'Recomendaciones', key: 'P', icon: Sparkles }
+  { label: 'Recomendaciones', key: 'P', icon: Sparkles },
+  { label: 'Configuración', key: 'C', icon: Settings }
 ]

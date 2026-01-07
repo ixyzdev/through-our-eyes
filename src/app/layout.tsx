@@ -1,17 +1,6 @@
 import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
 import Link from 'next/link'
 import './globals.css'
-
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin']
-})
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin']
-})
 
 export const metadata: Metadata = {
   title: 'Through Our Eyes | Club de lectura moderno',
@@ -26,9 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="font-sans antialiased">
         <div className="bg-background text-foreground">
           <header className="border-border/70 bg-card/80 border-b backdrop-blur">
             <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">

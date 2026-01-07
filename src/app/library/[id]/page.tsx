@@ -14,7 +14,6 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-
 import {
   fetchBookById,
   fetchBooks,
@@ -23,7 +22,6 @@ import {
 } from '@/lib/books'
 
 export const dynamic = 'force-dynamic'
-
 
 const statusMeta: Record<
   BookStatus,

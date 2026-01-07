@@ -1,9 +1,6 @@
 import { BookOpenCheck, LogIn, Sparkles } from 'lucide-react'
 
-import {
-  FormField,
-  type FormFieldDefinition
-} from '@/components/auth/form-field'
+import { FormField, type FormFieldDefinition } from '@/features/auth/form-field'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {

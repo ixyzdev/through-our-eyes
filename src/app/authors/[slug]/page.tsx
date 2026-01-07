@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 
-import AuthorDetail from '@/components/author/author-detail'
+import AuthorDetail from '@/features/author/author-detail'
 import { fetchAuthorBySlug, fetchAuthorSlugs } from '@/lib/authors'
 
 export async function generateStaticParams() {

@@ -4,8 +4,8 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 
-import { AuthForm } from '@/components/auth/auth-form'
-import { HeroPanel } from '@/components/auth/hero-panel'
+import { AuthForm } from '@/features/auth/auth-form'
+import { HeroPanel } from '@/features/auth/hero-panel'
 import { Card } from '@/components/ui/card'
 
 type AuthMode = 'login' | 'signup'

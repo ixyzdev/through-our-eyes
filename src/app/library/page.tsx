@@ -231,9 +231,11 @@ export default function LibraryPage() {
                 <Filter className="h-4 w-4" />
                 Filtros rápidos
               </Button>
-              <Button className="gap-2">
-                <Sparkles className="h-4 w-4" />
-                Añadir libro
+              <Button asChild className="gap-2">
+                <Link href="/library/upload">
+                  <Sparkles className="h-4 w-4" />
+                  Subir libro
+                </Link>
               </Button>
             </div>
           </div>

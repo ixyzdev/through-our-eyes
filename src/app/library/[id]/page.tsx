@@ -14,7 +14,16 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { fetchBookById, type Book, type BookStatus } from '@/lib/books'
+
+import {
+  fetchBookById,
+  fetchBooks,
+  type Book,
+  type BookStatus
+} from '@/lib/books'
+
+export const dynamic = 'force-dynamic'
+
 
 const statusMeta: Record<
   BookStatus,
@@ -52,6 +61,14 @@ function MoodPill({ mood }: { mood: Book['mood'] }) {
       {mood}
     </div>
   )
+}
+
+export async function generateStaticParams() {
+  const data = await fetchBooks()
+  const ids = [...data.library, ...data.recommended].map((book) => ({
+    id: book.id
+  }))
+  return ids
 }
 
 export default async function BookDetailPage({

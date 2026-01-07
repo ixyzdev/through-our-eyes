@@ -2,6 +2,8 @@
 
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import type { LucideIcon } from 'lucide-react'
 import {
   BookOpenCheck,
@@ -54,6 +56,7 @@ function BookCard({
   variant?: CardVariant
 }) {
   const isRecommendation = variant === 'recommendation'
+  const router = useRouter()
   const aspect = isRecommendation ? 'aspect-[3/4]' : 'aspect-[2/3]'
   const cardStyle = isRecommendation
     ? 'bg-transparent border-0 p-0 shadow-none'
@@ -61,9 +64,20 @@ function BookCard({
 
   return (
     <Card
+      role="button"
+      tabIndex={0}
+      onClick={() => router.push(`/library/${book.id}`)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          router.push(`/library/${book.id}`)
+        }
+      }}
       className={`group relative overflow-hidden rounded-3xl transition duration-300 hover:-translate-y-1 hover:shadow-[0_25px_70px_-35px_rgba(15,23,42,0.45)] ${cardStyle}`}
     >
-      <div className={`relative ${aspect} overflow-hidden rounded-3xl`}>
+      <div
+        className={`relative ${aspect} overflow-hidden rounded-3xl shadow-[0_20px_40px_-28px_rgb(15,23,42,0.35)]`}
+      >
         <div
           className={`absolute inset-0 bg-gradient-to-br ${book.cover} opacity-70 transition duration-500 group-hover:opacity-90`}
         />
@@ -99,22 +113,29 @@ function BookCard({
 
         {!isRecommendation ? (
           <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 transition duration-300 group-hover:opacity-100">
-            <button className="text-primary rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold tracking-wide uppercase transition hover:bg-white">
+            <Link
+              href={`/library/${book.id}`}
+              className="text-primary rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold tracking-wide uppercase transition hover:bg-white"
+              onClick={(event) => event.stopPropagation()}
+            >
               Ver ficha
-            </button>
-            <button className="rounded-full bg-black/65 px-3 py-1 text-[11px] font-semibold tracking-wide text-white uppercase transition hover:bg-black/80">
+            </Link>
+            <button
+              className="rounded-full bg-black/65 px-3 py-1 text-[11px] font-semibold tracking-wide text-white uppercase transition hover:bg-black/80"
+              onClick={(event) => event.stopPropagation()}
+            >
               Añadir a lista
             </button>
           </div>
         ) : null}
       </div>
 
-      <div className="mt-4 space-y-1">
+      <div className="relative z-20 mt-4 space-y-1">
         <p className="text-lg leading-tight font-semibold">{book.title}</p>
         <p className="text-muted-foreground text-sm">{book.author}</p>
       </div>
-      <p className="text-primary/80 mt-2 text-sm">{book.mood}</p>
-      <div className="mt-3 flex flex-wrap gap-2">
+      <p className="text-primary/80 relative z-20 mt-2 text-sm">{book.mood}</p>
+      <div className="relative z-20 mt-3 flex flex-wrap gap-2">
         {book.tags.map((tag) => (
           <Badge key={tag} variant="outline">
             {tag}
@@ -122,7 +143,7 @@ function BookCard({
         ))}
       </div>
 
-      <div className="text-muted-foreground mt-4 flex items-center justify-between text-xs">
+      <div className="text-muted-foreground relative z-20 mt-4 flex items-center justify-between text-xs">
         <span
           className={`rounded-full px-3 py-1 font-semibold ${statusStyles[book.status]}`}
         >
@@ -131,7 +152,7 @@ function BookCard({
         <span>{book.progress}%</span>
       </div>
       <div
-        className={`bg-muted mt-2 h-2 w-full overflow-hidden rounded-full ${isRecommendation ? 'opacity-75' : ''}`}
+        className={`bg-muted relative z-20 mt-2 h-2 w-full overflow-hidden rounded-full ${isRecommendation ? 'opacity-75' : ''}`}
       >
         <div
           className="bg-primary h-full rounded-full transition-all"
@@ -184,7 +205,10 @@ export default function LibraryPage() {
     })
   }, [data, query])
 
-  const skeletons = useMemo(() => Array.from({ length: 4 }), [])
+  const skeletons = useMemo<null[]>(
+    () => Array.from({ length: 4 }, () => null),
+    []
+  )
 
   return (
     <div className="text-foreground relative min-h-screen overflow-hidden bg-gradient-to-b from-amber-50 via-white to-blue-50 antialiased dark:from-zinc-950 dark:via-zinc-900 dark:to-black">
@@ -255,7 +279,7 @@ export default function LibraryPage() {
           </div>
           <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-4">
             {(isLoading ? skeletons : filteredRecommended).map((book, index) =>
-              book && typeof book === 'object' ? (
+              book ? (
                 <BookCard key={book.id} book={book} variant="recommendation" />
               ) : (
                 <Card
@@ -289,7 +313,7 @@ export default function LibraryPage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {(isLoading ? skeletons : filteredLibrary).map((book, index) =>
-              book && typeof book === 'object' ? (
+              book ? (
                 <BookCard key={book.id} book={book} />
               ) : (
                 <Card

@@ -6,11 +6,16 @@ import {
   BookOpen,
   BookmarkPlus,
   Clock3,
+  Globe,
+  MessageSquare,
   LayoutList,
   ListPlus,
   Plus,
+  Share2,
   Sparkles,
+  Star,
   Tag,
+  User,
   Wand2
 } from 'lucide-react'
 
@@ -142,9 +147,11 @@ export default async function BookDetailPage({
                 <p className="text-muted-foreground text-lg">
                   {book.author} · {book.genre}
                 </p>
-                <p className="text-muted-foreground text-sm">
-                  Tu ficha personal con progreso, mood y colecciones activas.
-                  Ajusta rituales y etiquetas para mantenerlo en movimiento.
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {book.synopsis}
+                </p>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {book.professionalDescription}
                 </p>
               </div>
 
@@ -238,6 +245,10 @@ export default async function BookDetailPage({
                   <ListPlus className="h-4 w-4" />
                   Añadir a mi lista
                 </Button>
+                <Button variant="ghost" className="gap-2">
+                  <Share2 className="h-4 w-4" />
+                  Compartir
+                </Button>
               </div>
             </div>
           </div>
@@ -317,48 +328,69 @@ export default async function BookDetailPage({
           <Card className="border-border/70 bg-card/90 p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-lg font-semibold">Ritual sugerido</p>
+                <p className="text-lg font-semibold">Ficha editorial</p>
                 <p className="text-muted-foreground text-sm">
-                  Mezcla de energía juvenil y estructura ligera.
+                  Información bibliográfica y detalles de publicación.
                 </p>
               </div>
-              <Sparkles className="text-primary h-5 w-5" />
+              <BookOpen className="text-primary h-5 w-5" />
             </div>
-            <div className="text-foreground/90 mt-4 space-y-3 text-sm">
-              <div className="flex items-start gap-3">
-                <span className="bg-primary/10 text-primary mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold">
-                  1
+            <div className="mt-5 grid gap-3 text-sm">
+              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+                <span className="text-muted-foreground text-xs font-semibold uppercase">
+                  Autor
                 </span>
-                <p>
-                  Calienta con una lectura de 5 minutos para recordar el tono{' '}
-                  <strong>{book.mood.toLowerCase()}</strong>.
-                </p>
+                <span className="font-semibold">{book.author}</span>
               </div>
-              <div className="flex items-start gap-3">
-                <span className="bg-primary/10 text-primary mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold">
-                  2
+              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+                <span className="text-muted-foreground text-xs font-semibold uppercase">
+                  Traductor
                 </span>
-                <p>
-                  Activa etiquetas como{' '}
-                  <strong>{book.tags.slice(0, 2).join(' · ')}</strong> y enfoca
-                  las notas.
-                </p>
+                <span className="font-semibold">{book.translator}</span>
               </div>
-              <div className="flex items-start gap-3">
-                <span className="bg-primary/10 text-primary mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold">
-                  3
+              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+                <span className="text-muted-foreground text-xs font-semibold uppercase">
+                  Editorial
                 </span>
-                <p>
-                  Programa la siguiente sesión con{' '}
-                  <strong>{book.genre.toLowerCase()}</strong> en tu lista rápida
-                  y marca el estado si cambió.
-                </p>
+                <span className="font-semibold">{book.publisher}</span>
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+                <span className="text-muted-foreground text-xs font-semibold uppercase">
+                  Año
+                </span>
+                <span className="font-semibold">{book.publicationYear}</span>
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+                <span className="text-muted-foreground text-xs font-semibold uppercase">
+                  Idioma
+                </span>
+                <span className="font-semibold">{book.language}</span>
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+                <span className="text-muted-foreground text-xs font-semibold uppercase">
+                  Páginas
+                </span>
+                <span className="font-semibold">{book.pages}</span>
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+                <span className="text-muted-foreground text-xs font-semibold uppercase">
+                  Edición
+                </span>
+                <span className="font-semibold">{book.edition}</span>
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+                <span className="text-muted-foreground text-xs font-semibold uppercase">
+                  ISBN
+                </span>
+                <span className="font-semibold">{book.isbn}</span>
               </div>
             </div>
             <div className="mt-6 flex flex-wrap gap-2">
-              <Button className="gap-2">
-                <Wand2 className="h-4 w-4" />
-                Lanzar ritual animado
+              <Button asChild className="gap-2">
+                <Link href={book.purchaseLink} target="_blank" rel="noreferrer">
+                  <Globe className="h-4 w-4" />
+                  Comprar en Busca Libre
+                </Link>
               </Button>
               <Button variant="outline" className="gap-2">
                 <BookmarkPlus className="h-4 w-4" />
@@ -415,23 +447,31 @@ export default async function BookDetailPage({
           <Card className="border-border/70 bg-card/90 p-6">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <p className="text-lg font-semibold">Agrega a mi lista</p>
+                <p className="text-lg font-semibold">Sección del autor</p>
                 <p className="text-muted-foreground text-sm">
-                  Crea una nueva lista o ajusta la visibilidad para compartir
-                  recomendaciones.
+                  Perfil breve del autor y sus líneas temáticas.
                 </p>
               </div>
-              <LayoutList className="text-primary h-5 w-5" />
+              <User className="text-primary h-5 w-5" />
             </div>
-            <div className="mt-6 space-y-4">
+            <p className="text-muted-foreground mt-4 text-sm leading-relaxed">
+              {book.authorSection}
+            </p>
+            <div className="mt-6 space-y-3">
               <div className="border-border/70 bg-background/60 rounded-2xl border p-4">
                 <p className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
-                  Nombre sugerido
+                  Categorías del autor
                 </p>
-                <p className="text-base font-semibold">Lecturas que brillan</p>
-                <p className="text-muted-foreground mt-2 text-sm">
-                  Agrupa historias con energía similar y añade notas rápidas.
-                </p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {book.categories.map((category) => (
+                    <Badge
+                      key={`author-${category}`}
+                      className="bg-primary/10 text-primary border-primary/10"
+                    >
+                      {category}
+                    </Badge>
+                  ))}
+                </div>
               </div>
               <div className="flex flex-col gap-2">
                 <Button className="gap-2">
@@ -446,6 +486,166 @@ export default async function BookDetailPage({
             </div>
           </Card>
         </div>
+
+        <div className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
+          <Card className="border-border/70 bg-card/90 p-6">
+            <div className="flex items-center justify-between gap-4">
+              <div>
+                <p className="text-lg font-semibold">Libros similares</p>
+                <p className="text-muted-foreground text-sm">
+                  Títulos recomendados con temática o estilo afín.
+                </p>
+              </div>
+              <Sparkles className="text-primary h-5 w-5" />
+            </div>
+            <div className="mt-5 grid gap-3">
+              {book.similarBooks.map((similar) => (
+                <div
+                  key={`${similar.title}-${similar.author}`}
+                  className="border-border/70 bg-background/60 flex flex-wrap items-center justify-between gap-4 rounded-2xl border p-4 shadow-sm"
+                >
+                  <div>
+                    <p className="text-base font-semibold">{similar.title}</p>
+                    <p className="text-muted-foreground text-sm">
+                      {similar.author}
+                    </p>
+                  </div>
+                  <Button variant="outline" className="gap-2">
+                    <BookOpen className="h-4 w-4" />
+                    Ver ficha
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card className="border-border/70 bg-card/90 p-6">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-lg font-semibold">Calificaciones</p>
+                <p className="text-muted-foreground text-sm">
+                  {book.ratings.total} reseñas · promedio {book.ratings.average}
+                </p>
+              </div>
+              <Star className="text-primary h-5 w-5" />
+            </div>
+            <div className="mt-4 space-y-3">
+              {book.ratings.breakdown.map((item) => (
+                <div key={item.label} className="space-y-2">
+                  <div className="flex items-center justify-between text-xs font-semibold uppercase text-muted-foreground">
+                    <span>{item.label}</span>
+                    <span>{item.count}</span>
+                  </div>
+                  <div className="bg-muted h-2 w-full overflow-hidden rounded-full">
+                    <div
+                      className="bg-primary h-full rounded-full"
+                      style={{
+                        width: `${Math.round(
+                          (item.count / book.ratings.total) * 100
+                        )}%`
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </div>
+
+        <Card className="border-border/70 bg-card/90 p-6">
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="text-lg font-semibold">Comentarios</p>
+              <p className="text-muted-foreground text-sm">
+                Opiniones recientes de lectores.
+              </p>
+            </div>
+            <MessageSquare className="text-primary h-5 w-5" />
+          </div>
+          <div className="mt-5 grid gap-4 md:grid-cols-2">
+            {book.ratings.comments.map((comment) => (
+              <div
+                key={comment.id}
+                className="border-border/70 bg-background/60 rounded-2xl border p-4 shadow-sm"
+              >
+                <div className="flex items-center justify-between">
+                  <p className="text-sm font-semibold">{comment.name}</p>
+                  <span className="text-muted-foreground text-xs">
+                    {comment.date}
+                  </span>
+                </div>
+                <div className="mt-2 flex items-center gap-1 text-amber-500">
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <Star
+                      key={`${comment.id}-star-${index}`}
+                      className={`h-4 w-4 ${
+                        index < comment.rating
+                          ? 'fill-amber-400'
+                          : 'fill-transparent text-muted-foreground/40'
+                      }`}
+                    />
+                  ))}
+                </div>
+                <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
+                  {comment.comment}
+                </p>
+              </div>
+            ))}
+          </div>
+        </Card>
+
+        <Card className="border-border/70 bg-card/90 p-6">
+          <div className="flex items-center justify-between gap-4">
+            <div className="space-y-1">
+              <p className="text-lg font-semibold">Ritual sugerido</p>
+              <p className="text-muted-foreground text-sm">
+                Mezcla de energía juvenil y estructura ligera.
+              </p>
+            </div>
+            <Wand2 className="text-primary h-5 w-5" />
+          </div>
+          <div className="text-foreground/90 mt-4 space-y-3 text-sm">
+            <div className="flex items-start gap-3">
+              <span className="bg-primary/10 text-primary mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold">
+                1
+              </span>
+              <p>
+                Calienta con una lectura de 5 minutos para recordar el tono{' '}
+                <strong>{book.mood.toLowerCase()}</strong>.
+              </p>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="bg-primary/10 text-primary mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold">
+                2
+              </span>
+              <p>
+                Activa etiquetas como{' '}
+                <strong>{book.tags.slice(0, 2).join(' · ')}</strong> y enfoca las
+                notas.
+              </p>
+            </div>
+            <div className="flex items-start gap-3">
+              <span className="bg-primary/10 text-primary mt-1 inline-flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold">
+                3
+              </span>
+              <p>
+                Programa la siguiente sesión con{' '}
+                <strong>{book.genre.toLowerCase()}</strong> en tu lista rápida y
+                marca el estado si cambió.
+              </p>
+            </div>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <Button className="gap-2">
+              <Wand2 className="h-4 w-4" />
+              Lanzar ritual animado
+            </Button>
+            <Button variant="outline" className="gap-2">
+              <BookmarkPlus className="h-4 w-4" />
+              Guardar como favorito
+            </Button>
+          </div>
+        </Card>
       </div>
     </div>
   )

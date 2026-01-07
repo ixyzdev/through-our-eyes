@@ -205,7 +205,10 @@ export default function LibraryPage() {
     })
   }, [data, query])
 
-  const skeletons = useMemo(() => Array.from({ length: 4 }), [])
+  const skeletons = useMemo<null[]>(
+    () => Array.from({ length: 4 }, () => null),
+    []
+  )
 
   return (
     <div className="text-foreground relative min-h-screen overflow-hidden bg-gradient-to-b from-amber-50 via-white to-blue-50 antialiased dark:from-zinc-950 dark:via-zinc-900 dark:to-black">
@@ -276,7 +279,7 @@ export default function LibraryPage() {
           </div>
           <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-4">
             {(isLoading ? skeletons : filteredRecommended).map((book, index) =>
-              book && typeof book === 'object' ? (
+              book ? (
                 <BookCard key={book.id} book={book} variant="recommendation" />
               ) : (
                 <Card
@@ -310,7 +313,7 @@ export default function LibraryPage() {
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {(isLoading ? skeletons : filteredLibrary).map((book, index) =>
-              book && typeof book === 'object' ? (
+              book ? (
                 <BookCard key={book.id} book={book} />
               ) : (
                 <Card

@@ -16,7 +16,8 @@ import {
   Loader2,
   NotebookPen,
   Settings,
-  Sparkles
+  Sparkles,
+  UserCircle2
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -97,6 +98,13 @@ const navigationSections: {
   {
     title: 'Explora y configura',
     items: [
+      {
+        id: 'perfil',
+        label: 'Perfil',
+        icon: UserCircle2,
+        description: 'Tu tarjeta pública de lectora.',
+        href: '/profile'
+      },
       {
         id: 'audio',
         label: 'Audiolibros',

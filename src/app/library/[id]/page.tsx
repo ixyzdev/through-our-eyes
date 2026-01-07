@@ -7,6 +7,7 @@ import {
   BookmarkPlus,
   Clock3,
   Globe,
+  ListChecks,
   MessageSquare,
   LayoutList,
   ListPlus,
@@ -486,13 +487,17 @@ export default async function BookDetailPage({
                 </div>
               </div>
               <div className="flex flex-col gap-2">
-                <Button className="gap-2">
-                  <Plus className="h-4 w-4" />
-                  Crear nueva lista
+                <Button asChild className="gap-2">
+                  <Link href="/library/lists/new">
+                    <Plus className="h-4 w-4" />
+                    Crear nueva lista
+                  </Link>
                 </Button>
-                <Button variant="outline" className="gap-2">
-                  <BookmarkPlus className="h-4 w-4" />
-                  Gestionar mis listas
+                <Button asChild variant="outline" className="gap-2">
+                  <Link href="/library/lists/list-1">
+                    <ListChecks className="h-4 w-4" />
+                    Gestionar mis listas
+                  </Link>
                 </Button>
               </div>
             </div>

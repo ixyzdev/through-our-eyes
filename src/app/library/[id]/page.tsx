@@ -149,7 +149,7 @@ export default async function BookDetailPage({
                 <p className="text-muted-foreground text-lg">
                   <Link
                     href={`/authors/${getAuthorSlug(book.author)}`}
-                    className="text-foreground transition hover:text-primary"
+                    className="text-foreground hover:text-primary transition"
                   >
                     {book.author}
                   </Link>{' '}
@@ -344,54 +344,54 @@ export default async function BookDetailPage({
               <BookOpen className="text-primary h-5 w-5" />
             </div>
             <div className="mt-5 grid gap-3 text-sm">
-              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+              <div className="bg-background/60 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 px-4 py-3">
                 <span className="text-muted-foreground text-xs font-semibold uppercase">
                   Autor
                 </span>
                 <Link
                   href={`/authors/${getAuthorSlug(book.author)}`}
-                  className="font-semibold transition hover:text-primary"
+                  className="hover:text-primary font-semibold transition"
                 >
                   {book.author}
                 </Link>
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+              <div className="bg-background/60 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 px-4 py-3">
                 <span className="text-muted-foreground text-xs font-semibold uppercase">
                   Traductor
                 </span>
                 <span className="font-semibold">{book.translator}</span>
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+              <div className="bg-background/60 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 px-4 py-3">
                 <span className="text-muted-foreground text-xs font-semibold uppercase">
                   Editorial
                 </span>
                 <span className="font-semibold">{book.publisher}</span>
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+              <div className="bg-background/60 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 px-4 py-3">
                 <span className="text-muted-foreground text-xs font-semibold uppercase">
                   Año
                 </span>
                 <span className="font-semibold">{book.publicationYear}</span>
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+              <div className="bg-background/60 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 px-4 py-3">
                 <span className="text-muted-foreground text-xs font-semibold uppercase">
                   Idioma
                 </span>
                 <span className="font-semibold">{book.language}</span>
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+              <div className="bg-background/60 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 px-4 py-3">
                 <span className="text-muted-foreground text-xs font-semibold uppercase">
                   Páginas
                 </span>
                 <span className="font-semibold">{book.pages}</span>
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+              <div className="bg-background/60 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 px-4 py-3">
                 <span className="text-muted-foreground text-xs font-semibold uppercase">
                   Edición
                 </span>
                 <span className="font-semibold">{book.edition}</span>
               </div>
-              <div className="flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-background/60 px-4 py-3">
+              <div className="bg-background/60 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 px-4 py-3">
                 <span className="text-muted-foreground text-xs font-semibold uppercase">
                   ISBN
                 </span>
@@ -549,7 +549,7 @@ export default async function BookDetailPage({
             <div className="mt-4 space-y-3">
               {book.ratings.breakdown.map((item) => (
                 <div key={item.label} className="space-y-2">
-                  <div className="flex items-center justify-between text-xs font-semibold uppercase text-muted-foreground">
+                  <div className="text-muted-foreground flex items-center justify-between text-xs font-semibold uppercase">
                     <span>{item.label}</span>
                     <span>{item.count}</span>
                   </div>
@@ -598,7 +598,7 @@ export default async function BookDetailPage({
                       className={`h-4 w-4 ${
                         index < comment.rating
                           ? 'fill-amber-400'
-                          : 'fill-transparent text-muted-foreground/40'
+                          : 'text-muted-foreground/40 fill-transparent'
                       }`}
                     />
                   ))}
@@ -637,8 +637,8 @@ export default async function BookDetailPage({
               </span>
               <p>
                 Activa etiquetas como{' '}
-                <strong>{book.tags.slice(0, 2).join(' · ')}</strong> y enfoca las
-                notas.
+                <strong>{book.tags.slice(0, 2).join(' · ')}</strong> y enfoca
+                las notas.
               </p>
             </div>
             <div className="flex items-start gap-3">

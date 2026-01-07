@@ -72,9 +72,10 @@ export async function generateStaticParams() {
 export default async function BookDetailPage({
   params
 }: {
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) {
-  const book = await fetchBookById(params.id)
+  const { id } = await params
+  const book = await fetchBookById(id)
 
   if (!book) {
     notFound()

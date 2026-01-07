@@ -6,6 +6,9 @@ import {
   BookOpen,
   BookmarkPlus,
   Clock3,
+  LayoutList,
+  ListPlus,
+  Plus,
   Sparkles,
   Tag,
   Wand2
@@ -20,6 +23,7 @@ import {
   type Book,
   type BookStatus
 } from '@/lib/books'
+import { fetchUserLists } from '@/lib/lists'
 
 export const dynamic = 'force-dynamic'
 
@@ -76,6 +80,7 @@ export default async function BookDetailPage({
 }) {
   const { id } = await params
   const book = await fetchBookById(id)
+  const lists = await fetchUserLists()
 
   if (!book) {
     notFound()
@@ -227,6 +232,10 @@ export default async function BookDetailPage({
                   <BookmarkPlus className="h-4 w-4" />
                   Añadir a ritual
                 </Button>
+                <Button variant="secondary" className="gap-2">
+                  <ListPlus className="h-4 w-4" />
+                  Añadir a mi lista
+                </Button>
               </div>
             </div>
           </div>
@@ -353,6 +362,85 @@ export default async function BookDetailPage({
                 <BookmarkPlus className="h-4 w-4" />
                 Guardar como favorito
               </Button>
+            </div>
+          </Card>
+        </div>
+
+        <div className="grid gap-4 lg:grid-cols-[1.5fr_1fr]">
+          <Card className="border-border/70 bg-card/90 p-6">
+            <div className="flex items-center justify-between gap-4">
+              <div className="space-y-1">
+                <p className="text-lg font-semibold">Mis listas</p>
+                <p className="text-muted-foreground text-sm">
+                  Selecciona dónde guardar este libro y revisa tus colecciones
+                  activas.
+                </p>
+              </div>
+              <span className="text-primary/80 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold">
+                {lists.length} listas
+              </span>
+            </div>
+            <div className="mt-5 grid gap-3">
+              {lists.map((list) => (
+                <div
+                  key={list.id}
+                  className="border-border/70 bg-background/60 flex flex-wrap items-center justify-between gap-4 rounded-2xl border p-4 shadow-sm"
+                >
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="text-base font-semibold">{list.name}</p>
+                      <span className="text-muted-foreground text-xs font-semibold uppercase">
+                        {list.visibility}
+                      </span>
+                    </div>
+                    <p className="text-muted-foreground mt-1 text-sm">
+                      {list.description}
+                    </p>
+                    <div className="text-muted-foreground mt-3 flex flex-wrap gap-3 text-xs font-semibold uppercase">
+                      <span>{list.bookCount} libros</span>
+                      <span>{list.updatedAt}</span>
+                    </div>
+                  </div>
+                  <Button variant="outline" className="gap-2">
+                    <Plus className="h-4 w-4" />
+                    Añadir aquí
+                  </Button>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card className="border-border/70 bg-card/90 p-6">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-lg font-semibold">Agrega a mi lista</p>
+                <p className="text-muted-foreground text-sm">
+                  Crea una nueva lista o ajusta la visibilidad para compartir
+                  recomendaciones.
+                </p>
+              </div>
+              <LayoutList className="text-primary h-5 w-5" />
+            </div>
+            <div className="mt-6 space-y-4">
+              <div className="border-border/70 bg-background/60 rounded-2xl border p-4">
+                <p className="text-muted-foreground text-xs font-semibold tracking-wide uppercase">
+                  Nombre sugerido
+                </p>
+                <p className="text-base font-semibold">Lecturas que brillan</p>
+                <p className="text-muted-foreground mt-2 text-sm">
+                  Agrupa historias con energía similar y añade notas rápidas.
+                </p>
+              </div>
+              <div className="flex flex-col gap-2">
+                <Button className="gap-2">
+                  <Plus className="h-4 w-4" />
+                  Crear nueva lista
+                </Button>
+                <Button variant="outline" className="gap-2">
+                  <BookmarkPlus className="h-4 w-4" />
+                  Gestionar mis listas
+                </Button>
+              </div>
             </div>
           </Card>
         </div>

@@ -114,6 +114,13 @@ function BookCard({
         {!isRecommendation ? (
           <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 transition duration-300 group-hover:opacity-100">
             <Link
+              href={`/library/${book.id}/read`}
+              className="rounded-full bg-primary px-3 py-1 text-[11px] font-semibold tracking-wide text-white uppercase transition hover:bg-primary/90"
+              onClick={(event) => event.stopPropagation()}
+            >
+              Leer ahora
+            </Link>
+            <Link
               href={`/library/${book.id}`}
               className="text-primary rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold tracking-wide uppercase transition hover:bg-white"
               onClick={(event) => event.stopPropagation()}
@@ -230,6 +237,12 @@ export default function LibraryPage() {
               <Button variant="outline" className="gap-2">
                 <Filter className="h-4 w-4" />
                 Filtros rápidos
+              </Button>
+              <Button asChild variant="secondary" className="gap-2">
+                <Link href="/library/reader">
+                  <BookOpenCheck className="h-4 w-4" />
+                  Abrir lector
+                </Link>
               </Button>
               <Button asChild className="gap-2">
                 <Link href="/library/upload">

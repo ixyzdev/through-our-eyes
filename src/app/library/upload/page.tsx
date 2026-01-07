@@ -164,7 +164,7 @@ export default function UploadBookPage() {
             </div>
           </div>
           <div
-            className="border-border/70 bg-muted/40 mt-5 flex min-h-[120px] items-center justify-center rounded-3xl border border-dashed text-sm text-muted-foreground"
+            className="border-border/70 bg-muted/40 text-muted-foreground mt-5 flex min-h-[120px] items-center justify-center rounded-3xl border border-dashed text-sm"
             onDragOver={(event) => event.preventDefault()}
             onDrop={(event) => {
               event.preventDefault()
@@ -200,7 +200,9 @@ export default function UploadBookPage() {
                         : 'border-border/70 text-muted-foreground hover:text-foreground'
                     }`}
                   >
-                    <span className="font-semibold">{upload.title || 'Sin título'}</span>
+                    <span className="font-semibold">
+                      {upload.title || 'Sin título'}
+                    </span>
                     <span className="text-xs uppercase">
                       {upload.format === 'other' ? 'OTRO' : upload.format}
                     </span>
@@ -264,7 +266,9 @@ export default function UploadBookPage() {
                     <Input
                       value={activeUpload.year}
                       onChange={(event) =>
-                        updateUpload(activeUpload.id, { year: event.target.value })
+                        updateUpload(activeUpload.id, {
+                          year: event.target.value
+                        })
                       }
                     />
                   </label>
@@ -275,7 +279,9 @@ export default function UploadBookPage() {
                   <Input
                     value={activeUpload.tags}
                     onChange={(event) =>
-                      updateUpload(activeUpload.id, { tags: event.target.value })
+                      updateUpload(activeUpload.id, {
+                        tags: event.target.value
+                      })
                     }
                   />
                 </label>
@@ -289,7 +295,7 @@ export default function UploadBookPage() {
                         description: event.target.value
                       })
                     }
-                    className="border-input bg-background focus-visible:ring-ring/80 min-h-[110px] w-full rounded-2xl border px-4 py-3 text-sm shadow-none focus-visible:outline-none focus-visible:ring-2"
+                    className="border-input bg-background focus-visible:ring-ring/80 min-h-[110px] w-full rounded-2xl border px-4 py-3 text-sm shadow-none focus-visible:ring-2 focus-visible:outline-none"
                   />
                 </label>
 
@@ -298,9 +304,11 @@ export default function UploadBookPage() {
                   <select
                     value={activeUpload.listId}
                     onChange={(event) =>
-                      updateUpload(activeUpload.id, { listId: event.target.value })
+                      updateUpload(activeUpload.id, {
+                        listId: event.target.value
+                      })
                     }
-                    className="border-input bg-background focus-visible:ring-ring/80 w-full rounded-2xl border px-4 py-3 text-sm shadow-none focus-visible:outline-none focus-visible:ring-2"
+                    className="border-input bg-background focus-visible:ring-ring/80 w-full rounded-2xl border px-4 py-3 text-sm shadow-none focus-visible:ring-2 focus-visible:outline-none"
                   >
                     <option value="">Selecciona una lista</option>
                     {lists.map((list) => (

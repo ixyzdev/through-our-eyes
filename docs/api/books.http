@@ -1,0 +1,12 @@
+POST https://n8n.maesekelsier.duckdns.org/webhook-test/5570927a-dcfe-4a14-994a-d2f0b963fa59
+Content-Type: application/json
+
+{
+  "q": "fiction",
+  "orderBy": "relevance",
+  "maxResults": 1,
+  "startIndex": 0,
+  "langRestrict": "es",
+  "printType": "books",
+  "projection": "lite"
+}

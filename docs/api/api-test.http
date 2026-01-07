@@ -1,0 +1,9 @@
+POST https://n8n.maesekelsier.duckdns.org/webhook-test/5570927a-dcfe-4a14-994a-d2f0b963fa59
+Content-Type: application/json
+# Authorization: Bearer 2a477c25064df77735bece31af3bc054d69cc21883f6b184df2e291badd741768e5759e53521cd633c04f539aef7d9dff6b881c7d742408aabc5c62d9f92ae6d
+
+{
+  "q": "fiction",
+  "lang": "es",
+  "maxResults": 20
+}

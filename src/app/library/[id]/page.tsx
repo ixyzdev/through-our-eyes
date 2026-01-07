@@ -376,7 +376,7 @@ export default async function BookDetailPage({
                   activas.
                 </p>
               </div>
-              <span className="text-primary/80 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold">
+              <span className="text-primary/80 bg-primary/10 rounded-full px-3 py-1 text-xs font-semibold">
                 {lists.length} listas
               </span>
             </div>

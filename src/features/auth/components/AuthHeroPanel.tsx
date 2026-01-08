@@ -36,14 +36,10 @@ export function HeroPanel() {
   return (
     <div className="from-primary/10 via-primary/5 text-foreground dark:from-primary/20 relative flex flex-1 flex-col justify-between gap-10 overflow-hidden rounded-3xl bg-gradient-to-br to-indigo-100 p-8 shadow-[0_30px_80px_-40px_rgb(15,23,42,0.45)] dark:via-zinc-900 dark:to-black">
       <div className="absolute inset-0 opacity-70">
-        <div className="from-primary/20 absolute inset-10 rounded-full bg-gradient-to-br via-purple-500/10 to-emerald-400/10 blur-3xl" />
+        <div className="from-primary/20 absolute inset-10 rounded-full bg-linear-to-br via-purple-500/10 to-emerald-400/10 blur-3xl" />
       </div>
       <div className="relative space-y-4">
-        <Badge className="text-primary bg-white/70 shadow-sm backdrop-blur">
-          <Sparkles className="h-4 w-4" />
-          Curado para lectores exigentes
-        </Badge>
-        <h1 className="text-4xl leading-tight font-semibold tracking-tight md:text-5xl">
+        <h1 className="text-2xl leading-tight font-semibold tracking-tight md:text-2xl">
           La forma moderna de leer, subrayar y recordar.
         </h1>
         <p className="text-muted-foreground max-w-xl text-lg">

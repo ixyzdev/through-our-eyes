@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
-import './globals.css'
+
+import '@/styles/globals.css'
 
 export const metadata: Metadata = {
   title: 'Through Our Eyes | Club de lectura moderno',
@@ -15,8 +15,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className="font-sans antialiased">
-        <div className="bg-background text-foreground">{children}</div>
+      <body className="bg-background text-foreground flex min-h-screen flex-col font-sans antialiased">
+        {children}
       </body>
     </html>
   )

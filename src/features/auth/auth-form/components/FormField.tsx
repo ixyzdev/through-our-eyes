@@ -5,15 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-type FieldType = 'text' | 'email' | 'password'
-
-export interface FormFieldDefinition {
-  name: string
-  label: string
-  type: FieldType
-  placeholder?: string
-  autoComplete?: string
-}
+import { FormFieldDefinition } from '../interfaces/auth-form.types'
 
 interface FormFieldProps {
   field: FormFieldDefinition

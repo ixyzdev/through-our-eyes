@@ -1,134 +1,29 @@
 'use client'
 
 import { useEffect, useMemo, useState } from 'react'
-import type { LucideIcon } from 'lucide-react'
+
 import {
-  ArrowRight,
   BookMarked,
   BookOpenCheck,
   Bookmark,
-  BookmarkPlus,
   CalendarClock,
   Check,
-  Compass,
-  Headphones,
-  History,
-  Loader2,
-  NotebookPen,
-  Settings,
-  Sparkles,
-  UserCircle2
+  Loader2
 } from 'lucide-react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
+
 import {
   fetchDashboardData,
-  navShortcuts,
   type DashboardData,
-  type ReadingStat,
   type SessionPlan
 } from '@/lib/dashboard'
-import { cn } from '@/lib/utils'
 
-type NavigationItem = {
-  id: string
-  label: string
-  icon: LucideIcon
-  count?: string
-  description: string
-  href: string
-}
-
-const navigationSections: {
-  title: string
-  items: NavigationItem[]
-}[] = [
-  {
-    title: 'Panel principal',
-    items: [
-      {
-        id: 'resumen',
-        label: 'Resumen',
-        icon: Compass,
-        description: 'Vistas rápidas de tu progreso.',
-        href: '/#resumen'
-      },
-      {
-        id: 'recomendaciones',
-        label: 'Recomendaciones',
-        icon: Bookmark,
-        description: 'Lecturas sugeridas según tu ritmo.',
-        href: '/#recomendaciones'
-      }
-    ]
-  },
-  {
-    title: 'Biblioteca viva',
-    items: [
-      {
-        id: 'memorias',
-        label: 'Recuerdos',
-        icon: History,
-        count: '3',
-        description: 'Subrayados y fragmentos recientes.',
-        href: '/#memorias'
-      },
-      {
-        id: 'sesiones',
-        label: 'Sesiones',
-        icon: CalendarClock,
-        count: '2',
-        description: 'Rituales y sesiones agendadas.',
-        href: '/#sesiones'
-      },
-      {
-        id: 'listas',
-        label: 'Listas & rituales',
-        icon: BookmarkPlus,
-        description: 'Colecciones y rutinas activas.',
-        href: '/library'
-      }
-    ]
-  },
-  {
-    title: 'Explora y configura',
-    items: [
-      {
-        id: 'perfil',
-        label: 'Perfil',
-        icon: UserCircle2,
-        description: 'Tu tarjeta pública de lectora.',
-        href: '/profile'
-      },
-      {
-        id: 'audio',
-        label: 'Audiolibros',
-        icon: Headphones,
-        description: 'Escucha tus historias favoritas.',
-        href: '/library'
-      },
-      {
-        id: 'notas',
-        label: 'Notas rápidas',
-        icon: NotebookPen,
-        description: 'Ideas capturadas en segundos.',
-        href: '/library'
-      },
-      {
-        id: 'configuracion',
-        label: 'Configuración',
-        icon: Settings,
-        description: 'Preferencias, privacidad y accesos.',
-        href: '/settings'
-      }
-    ]
-  }
-]
+import { HomeSidebar } from '../components/HomeSidebar'
+import { HomeHeader } from '../components/HomeHeader'
+import { HomeStateCard } from './HomeStateCard'
 
 const sessionStatusStyles: Record<
   SessionPlan['status'],
@@ -148,183 +43,7 @@ const sessionStatusStyles: Record<
   }
 }
 
-function Sidebar() {
-  const pathname = usePathname()
-
-  return (
-    <aside className="border-border/70 bg-card/80 w-full max-w-[260px] space-y-8 rounded-3xl border p-6 shadow-[0_20px_80px_-40px_rgb(15,23,42,0.35)] backdrop-blur lg:sticky lg:top-8">
-      <div className="space-y-2">
-        <p className="text-muted-foreground text-xs font-semibold tracking-[0.18em] uppercase">
-          Navegación
-        </p>
-        <div className="space-y-3">
-          <div>
-            <label
-              htmlFor="nav-search"
-              className="text-muted-foreground mb-2 block text-xs font-semibold"
-            >
-              Buscar sección
-            </label>
-            <Input
-              id="nav-search"
-              placeholder="Ej. notas, sesiones..."
-              className="bg-background"
-            />
-          </div>
-          <nav className="space-y-6">
-            {navigationSections.map((section) => (
-              <div key={section.title} className="space-y-2">
-                <p className="text-muted-foreground text-[11px] font-semibold uppercase tracking-[0.2em]">
-                  {section.title}
-                </p>
-                <div className="space-y-1">
-                  {section.items.map((item) => {
-                    const isActive =
-                      item.href === pathname ||
-                      (pathname === '/' && item.id === 'resumen')
-
-                    return (
-                      <Link
-                        key={item.id}
-                        href={item.href}
-                        className={cn(
-                          'group text-muted-foreground hover:bg-muted/70 hover:text-foreground flex w-full items-center justify-between rounded-2xl px-3 py-2 text-sm font-medium transition',
-                          isActive &&
-                            'bg-primary/10 text-foreground ring-primary/30 ring-1'
-                        )}
-                      >
-                        <span className="flex items-start gap-3">
-                          <item.icon className="text-primary/80 group-hover:text-primary mt-0.5 h-4 w-4" />
-                          <span className="space-y-1">
-                            <span className="block text-sm font-semibold">
-                              {item.label}
-                            </span>
-                            <span className="text-muted-foreground block text-xs font-normal">
-                              {item.description}
-                            </span>
-                          </span>
-                        </span>
-                        {item.count ? (
-                          <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs font-semibold">
-                            {item.count}
-                          </span>
-                        ) : null}
-                      </Link>
-                    )
-                  })}
-                </div>
-              </div>
-            ))}
-          </nav>
-        </div>
-      </div>
-      <div className="from-primary/10 via-primary/5 shadow-primary/10 space-y-3 rounded-2xl bg-gradient-to-br to-emerald-50 p-4 shadow-inner">
-        <div className="flex items-center gap-3">
-          <div className="bg-primary text-primary-foreground shadow-primary/30 flex h-11 w-11 items-center justify-center rounded-2xl shadow-lg">
-            <Sparkles className="h-5 w-5" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold">Recuerdos activos</p>
-            <p className="text-muted-foreground text-xs">
-              Captura ideas y vuelve a ellas en segundos.
-            </p>
-          </div>
-        </div>
-        <Button className="w-full">Crear recuerdo</Button>
-      </div>
-      <div className="space-y-2">
-        <p className="text-muted-foreground text-xs font-semibold tracking-[0.18em] uppercase">
-          Atajos
-        </p>
-        <div className="grid grid-cols-2 gap-2">
-          {navShortcuts.map(({ label, key, icon: Icon }) => (
-            <Card
-              key={label}
-              className="border-border/70 bg-card/60 flex items-center gap-2 border-dashed p-3"
-            >
-              <Icon className="text-primary h-4 w-4" />
-              <div className="flex flex-1 items-center justify-between text-xs font-semibold">
-                <span>{label}</span>
-                <span className="bg-muted text-muted-foreground rounded-md px-2 py-1 text-[11px] tracking-wide uppercase">
-                  {key}
-                </span>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
-    </aside>
-  )
-}
-
-function StatCard({ stat }: { stat: ReadingStat }) {
-  const trendColor =
-    stat.trend === 'up'
-      ? 'text-emerald-600'
-      : stat.trend === 'down'
-        ? 'text-red-500'
-        : 'text-muted-foreground'
-
-  return (
-    <Card className="border-border/70 bg-card/80 p-4 shadow-sm backdrop-blur">
-      <div className="flex items-center justify-between">
-        <p className="text-muted-foreground text-sm">{stat.label}</p>
-        <Badge
-          variant="outline"
-          className="bg-muted/40 flex items-center gap-2 text-[11px] tracking-wide uppercase"
-        >
-          {stat.trend === 'up'
-            ? 'Mejorando'
-            : stat.trend === 'down'
-              ? 'Bajando'
-              : 'Estable'}
-          {stat.trend === 'up' ? (
-            <ArrowRight className="h-3 w-3 rotate-90 text-emerald-600" />
-          ) : stat.trend === 'down' ? (
-            <ArrowRight className="h-3 w-3 -rotate-90 text-red-500" />
-          ) : (
-            <ArrowRight className="text-muted-foreground h-3 w-3" />
-          )}
-        </Badge>
-      </div>
-      <div className="mt-4 flex items-end justify-between">
-        <p className="text-3xl font-semibold">{stat.value}</p>
-        <span className={`text-xs font-semibold ${trendColor}`}>
-          {stat.delta}
-        </span>
-      </div>
-    </Card>
-  )
-}
-
-function SectionHeader({
-  title,
-  description,
-  icon: Icon
-}: {
-  title: string
-  description: string
-  icon: LucideIcon
-}) {
-  return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-center gap-3">
-        <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-2xl">
-          <Icon className="h-5 w-5" />
-        </div>
-        <div>
-          <p className="text-lg font-semibold">{title}</p>
-          <p className="text-muted-foreground text-sm">{description}</p>
-        </div>
-      </div>
-      <Button variant="outline" size="sm">
-        Ver todo
-      </Button>
-    </div>
-  )
-}
-
-export default function Home() {
+export function HomeView() {
   const [data, setData] = useState<DashboardData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -350,7 +69,7 @@ export default function Home() {
     <div className="text-foreground relative min-h-screen overflow-hidden bg-gradient-to-b from-amber-50 via-white to-blue-50 antialiased dark:from-zinc-950 dark:via-zinc-900 dark:to-black">
       <div className="from-primary/15 pointer-events-none absolute inset-x-0 top-0 h-80 bg-gradient-to-b via-transparent to-transparent blur-3xl" />
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-10 lg:flex-row lg:items-start lg:px-8">
-        <Sidebar />
+        <HomeSidebar />
 
         <main className="flex-1 space-y-10">
           <header
@@ -379,7 +98,7 @@ export default function Home() {
                 : (data?.stats ?? [])
               ).map((stat, index) =>
                 stat ? (
-                  <StatCard key={stat.id} stat={stat} />
+                  <HomeStateCard key={stat.id} stat={stat} />
                 ) : (
                   <Card
                     key={`loading-${index}`}
@@ -399,7 +118,7 @@ export default function Home() {
           </header>
 
           <section id="memorias" className="space-y-4">
-            <SectionHeader
+            <HomeHeader
               title="Recuerdos recientes"
               description="Subrayados, notas y fragmentos listos para compartir."
               icon={BookOpenCheck}
@@ -462,7 +181,7 @@ export default function Home() {
           </section>
 
           <section id="sesiones" className="space-y-4">
-            <SectionHeader
+            <HomeHeader
               title="Sesiones y rituales"
               description="Prepara tus bloques de enfoque con alarmas suaves y notas rápidas."
               icon={CalendarClock}
@@ -522,7 +241,7 @@ export default function Home() {
           </section>
 
           <section id="recomendaciones" className="space-y-4">
-            <SectionHeader
+            <HomeHeader
               title="Recomendaciones personalizadas"
               description="Basadas en tus últimos subrayados y estados de ánimo."
               icon={Bookmark}

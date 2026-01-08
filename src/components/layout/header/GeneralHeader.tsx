@@ -1,3 +1,6 @@
+'use client'
+
+import * as React from 'react'
 import Link from 'next/link'
 import {
   BookOpen,
@@ -19,6 +22,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 export const GeneralHeader = () => {
+  const isMobile = useIsMobile()
+
   return (
     <header className="border-border/70 bg-card/80 border-b backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
@@ -92,5 +97,28 @@ export const GeneralHeader = () => {
         </nav>
       </div>
     </header>
+  )
+}
+
+function ListItem({
+  title,
+  children,
+  href,
+  ...props
+}: React.ComponentPropsWithoutRef<'li'> & { href: string }) {
+  return (
+    <li {...props}>
+      <NavigationMenuLink asChild>
+        <Link
+          href={href}
+          className="hover:bg-muted/60 focus:bg-muted/60 block space-y-1 rounded-2xl p-3 leading-none no-underline outline-none transition-colors"
+        >
+          <div className="text-sm font-semibold leading-none">{title}</div>
+          <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
+            {children}
+          </p>
+        </Link>
+      </NavigationMenuLink>
+    </li>
   )
 }

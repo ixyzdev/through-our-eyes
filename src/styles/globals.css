@@ -125,3 +125,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+/* Gradiente principal de la aplicación */
+.app-background-gradient {
+  @apply bg-linear-to-b from-amber-50 via-white to-blue-50;
+}
+
+/* Variante dark mode */
+.dark .app-background-gradient {
+  @apply from-zinc-950 via-zinc-900 to-black;
+}
+
+@layer utilities {
+  .clip-path-bookmark {
+    clip-path: polygon(
+      0 0,
+      100% 0,
+      50% 100%
+    );
+  }
+}

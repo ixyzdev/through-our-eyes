@@ -66,8 +66,8 @@ export function HomeView() {
   )
 
   return (
-    <div className="text-foreground relative min-h-screen overflow-hidden bg-gradient-to-b from-amber-50 via-white to-blue-50 antialiased dark:from-zinc-950 dark:via-zinc-900 dark:to-black">
-      <div className="from-primary/15 pointer-events-none absolute inset-x-0 top-0 h-80 bg-gradient-to-b via-transparent to-transparent blur-3xl" />
+    <div className="text-foreground relative min-h-screen overflow-hidden bg-linear-to-b from-amber-50 via-white to-blue-50 antialiased dark:from-zinc-950 dark:via-zinc-900 dark:to-black">
+      <div className="from-primary/15 pointer-events-none absolute inset-x-0 top-0 h-80 bg-linear-to-b via-transparent to-transparent blur-3xl" />
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-10 lg:flex-row lg:items-start lg:px-8">
         <HomeSidebar />
 

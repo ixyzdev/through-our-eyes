@@ -3,9 +3,8 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/providers/AuthProvider'
-import { GeneralHeader } from '@/components/layout/header/GeneralHeader'
 
-export default function PublicLayout({
+export default function AuthOnlyLayout({
   children
 }: {
   children: React.ReactNode
@@ -14,18 +13,13 @@ export default function PublicLayout({
   const router = useRouter()
 
   useEffect(() => {
-    if (!loading && !user) {
-      router.replace('/auth')
+    if (!loading && user) {
+      router.replace('/')
     }
   }, [loading, user, router])
 
   if (loading) return null
-  if (!user) return null
+  if (user) return null
 
-  return (
-    <>
-      <GeneralHeader />
-      {children}
-    </>
-  )
+  return <>{children}</>
 }

@@ -18,16 +18,12 @@ interface RegisterFormProps {
   handleRegister: (formData: AuthFormData, confirmPassword: string) => void
 }
 
-export function RegisterForm({
-  formData,
-  setFormData,
-  handleRegister
-}: RegisterFormProps) {
+export function RegisterForm(props: RegisterFormProps) {
   const [confirmPassword, setConfirmPassword] = React.useState('')
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    handleRegister(formData, confirmPassword)
+    props.handleRegister(props.formData, confirmPassword)
   }
 
   return (
@@ -48,9 +44,9 @@ export function RegisterForm({
               type="email"
               autoComplete="email"
               required
-              value={formData.email}
+              value={props.formData.email}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setFormData((prev) => ({
+                props.setFormData((prev) => ({
                   ...prev,
                   email: e.target.value
                 }))
@@ -66,11 +62,11 @@ export function RegisterForm({
               type="text"
               autoComplete="username"
               required
-              value={formData.name}
+              value={props.formData.name}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setFormData((prev) => ({
+                props.setFormData((prev) => ({
                   ...prev,
-                  username: e.target.value
+                  name: e.target.value
                 }))
               }
             />
@@ -84,9 +80,9 @@ export function RegisterForm({
               type="password"
               autoComplete="new-password"
               required
-              value={formData.password}
+              value={props.formData.password}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setFormData((prev) => ({
+                props.setFormData((prev) => ({
                   ...prev,
                   password: e.target.value
                 }))
@@ -110,27 +106,10 @@ export function RegisterForm({
           </div>
         </div>
 
-        {/* Separator */}
-        <div className="relative">
-          <Separator />
-          <span className="bg-background text-muted-foreground absolute inset-x-0 -top-2 mx-auto w-fit px-2 text-xs">
-            o continúa con
-          </span>
-        </div>
-
-        {/* OAuth */}
-        <div className="space-y-2">
-          <GoogleLoginButton
-            onClick={function (): void {
-              throw new Error('Function not implemented.')
-            }}
-          />
-          <GithubLoginButton
-            onClick={function (): void {
-              throw new Error('Function not implemented.')
-            }}
-          />
-        </div>
+        {/* Submit */}
+        <Button type="submit" className="w-full">
+          Crear cuenta
+        </Button>
 
         {/* Remember + Forgot */}
 
@@ -138,9 +117,9 @@ export function RegisterForm({
           <div className="flex items-center gap-2">
             <Checkbox
               id="remember"
-              checked={formData.remember}
+              checked={props.formData.remember}
               onCheckedChange={(checked) =>
-                setFormData((prev) => ({
+                props.setFormData((prev) => ({
                   ...prev,
                   remember: checked === true
                 }))
@@ -167,12 +146,29 @@ export function RegisterForm({
           </span>
           .
         </p> */}
-
-        {/* Submit */}
-        <Button type="submit" className="w-full">
-          Crear cuenta
-        </Button>
       </form>
+
+      {/* Separator */}
+      <div className="relative">
+        <Separator />
+        <span className="bg-background text-muted-foreground absolute inset-x-0 -top-2 mx-auto w-fit px-2 text-xs">
+          o continúa con
+        </span>
+      </div>
+
+      {/* OAuth */}
+      <div className="space-y-2">
+        <GoogleLoginButton
+          onClick={function (): void {
+            throw new Error('Function not implemented.')
+          }}
+        />
+        <GithubLoginButton
+          onClick={function (): void {
+            throw new Error('Function not implemented.')
+          }}
+        />
+      </div>
     </section>
   )
 }

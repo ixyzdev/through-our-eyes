@@ -16,14 +16,10 @@ interface LoginFormProps {
   handleLogin: (formData: AuthFormData) => void
 }
 
-export function LoginForm({
-  formData,
-  setFormData,
-  handleLogin
-}: LoginFormProps) {
+export function LoginForm(props: LoginFormProps) {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    handleLogin(formData)
+    props.handleLogin(props.formData)
   }
 
   return (
@@ -45,9 +41,9 @@ export function LoginForm({
             type="email"
             autoComplete="email"
             required
-            value={formData.email}
+            value={props.formData.email}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFormData((prev) => ({ ...prev, email: e.target.value }))
+              props.setFormData((prev) => ({ ...prev, email: e.target.value }))
             }
           />
         </div>
@@ -60,9 +56,12 @@ export function LoginForm({
             type="password"
             autoComplete="current-password"
             required
-            value={formData.password}
+            value={props.formData.password}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFormData((prev) => ({ ...prev, password: e.target.value }))
+              props.setFormData((prev) => ({
+                ...prev,
+                password: e.target.value
+              }))
             }
           />
         </div>
@@ -72,9 +71,9 @@ export function LoginForm({
           <div className="flex items-center gap-2">
             <Checkbox
               id="remember"
-              checked={formData.remember}
+              checked={props.formData.remember}
               onCheckedChange={(checked) =>
-                setFormData((prev) => ({
+                props.setFormData((prev) => ({
                   ...prev,
                   remember: checked === true
                 }))

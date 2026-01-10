@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import '@/styles/globals.css'
+import { Providers } from '@/providers/Providers'
 
 export const metadata: Metadata = {
   title: 'Through Our Eyes | Club de lectura moderno',
@@ -16,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className="app-background-gradient text-foreground flex min-h-screen flex-col font-sans antialiased">
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   )

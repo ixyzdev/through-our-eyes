@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className="app-background-gradient text-foreground flex min-h-screen flex-col font-sans antialiased">
+      <body className="text-foreground flex min-h-screen flex-col font-sans antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>

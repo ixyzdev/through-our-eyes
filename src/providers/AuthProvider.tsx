@@ -7,6 +7,7 @@ import { Models } from 'appwrite'
 type AuthContextType = {
   user: Models.User | null
   loading: boolean
+  refresh: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
@@ -15,16 +16,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<Models.User | null>(null)
   const [loading, setLoading] = useState(true)
 
+  const refresh = async () => {
+    try {
+      const user = await account.get()
+      setUser(user)
+    } catch {
+      setUser(null)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
-    account
-      .get()
-      .then(setUser)
-      .catch(() => setUser(null))
-      .finally(() => setLoading(false))
+    refresh()
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, loading, refresh }}>
       {children}
     </AuthContext.Provider>
   )

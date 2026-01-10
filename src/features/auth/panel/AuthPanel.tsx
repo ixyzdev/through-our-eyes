@@ -14,10 +14,29 @@ import { SliderToggleElevated } from '../components/slider-toggle/variants/Slide
 
 import { Models } from 'appwrite'
 
+import { useRouter } from 'next/navigation'
+
+import { useAuth } from '@/providers/AuthProvider'
+
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
+
+import { InlineNotification } from '../components/InlineNotification'
+
 type AuthMode = 'login' | 'signup'
+
+type AuthError = {
+  title: string
+  message: string
+}
 
 export function AuthPanel() {
   const [authMode, setAuthMode] = useState<AuthMode>('login')
+
+  const [authError, setAuthError] = useState<AuthError | null>(null)
+
+  const router = useRouter()
+
+  const { refresh } = useAuth()
 
   // * Estados para los atributos del usuario
   const [formData, setFormData] = useState<AuthFormData>({
@@ -41,37 +60,50 @@ export function AuthPanel() {
 
   async function handleLogin(formData: AuthFormData) {
     try {
-      account.createEmailPasswordSession({
+      setAuthError(null)
+
+      await account.createEmailPasswordSession({
         email: formData.email,
         password: formData.password
       })
 
-      const currentUser = await account.get()
-      setUser(currentUser)
-    } catch (error) {
-      console.error('Login error:', error)
-      throw error
+      await refresh()
+      router.replace('/')
+    } catch (error: any) {
+      setAuthError({
+        title: 'Error al iniciar sesión',
+        message:
+          error?.message ??
+          'Las credenciales no son válidas o ocurrió un problema inesperado.'
+      })
     }
   }
 
   async function handleRegister(formData: AuthFormData) {
     try {
+      setAuthError(null)
+
       await account.create({
         userId: ID.unique(),
         email: formData.email,
         password: formData.password,
         name: formData.name
       })
-      // Auto-login tras registro
-      account.createEmailPasswordSession({
+
+      await account.createEmailPasswordSession({
         email: formData.email,
         password: formData.password
       })
-      const currentUser = await account.get()
-      setUser(currentUser)
-    } catch (error) {
-      console.error('Register error:', error)
-      throw error
+
+      await refresh()
+      router.replace('/')
+    } catch (error: any) {
+      setAuthError({
+        title: 'Error al registrarse',
+        message:
+          error?.message ??
+          'No fue posible crear la cuenta. Verifica los datos ingresados.'
+      })
     }
   }
 
@@ -104,6 +136,17 @@ export function AuthPanel() {
           />
         )}
       </section>
+
+      {authError && (
+        <div className="animate-in fade-in slide-in-from-bottom-2 fixed right-6 bottom-6 z-50 w-1/2">
+          <InlineNotification
+            title={authError.title}
+            description={authError.message}
+            variant="danger"
+            onClose={() => setAuthError(null)}
+          />
+        </div>
+      )}
     </section>
   )
 }

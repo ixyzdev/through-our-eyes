@@ -20,13 +20,9 @@ export function SliderToggleElevated<T extends string>({
     <div
       ref={containerRef}
       className={cn(
-        'relative flex w-full items-center p-1 select-none',
-        [
-          'rounded-xl',
-          // canal premium
-          'from-muted/90 to-muted/60 bg-linear-to-b',
-          'shadow-[inset_0_1px_2px_rgb(0_0_0/0.10),inset_0_-1px_0_rgb(255_255_255/0.45)]'
-        ],
+        'relative grid w-full auto-cols-fr grid-flow-col items-center rounded-lg select-none',
+        'bg-muted',
+        'shadow-[inset_0_2px_4px_rgb(0_0_0/0.25),inset_0_-1px_0_rgb(255_255_255/0.35)]',
         className
       )}
     >
@@ -34,22 +30,15 @@ export function SliderToggleElevated<T extends string>({
       <div
         ref={sliderRef}
         className={cn(
-          'absolute inset-y-1 left-1 rounded-lg',
-          [
-            'border-border border',
-            'pointer-events-none will-change-transform',
-            // superficie elevada
-            'from-card to-card/95 bg-linear-to-b',
-            // tinte activo muy sutil
-            'after:absolute after:inset-0 after:rounded-lg after:opacity-100',
-            'after:from-primary/5 after:bg-linear-to-b after:to-transparent'
-          ],
-          dragging
-            ? 'shadow-[0_8px_20px_-8px_rgb(0_0_0/0.45)] transition-none'
-            : 'shadow-[0_4px_12px_-6px_rgb(0_0_0/0.35)] transition-shadow duration-150'
+          'pointer-events-none absolute inset-0 rounded-lg will-change-transform',
+          'bg-background',
+          'border-border/50 border',
+          // SIN sombra por defecto
+          dragging &&
+            'shadow-[0_0_0_1px_rgb(0_0_0/0.08),0_8px_20px_-8px_rgb(0_0_0/0.45)]'
         )}
         style={{
-          width: `calc(${100 / options.length}% - 0.5rem)`
+          width: `calc(100% / ${options.length})`
         }}
       />
 
@@ -64,7 +53,7 @@ export function SliderToggleElevated<T extends string>({
             onTouchStart={(e) => startDrag(e.touches[0]?.clientX ?? 0)}
             onClick={() => onChange(option.value)}
             className={cn(
-              'relative z-10 flex-1 rounded-lg py-2 text-sm font-medium',
+              'relative z-10 flex-1 rounded-lg py-2 font-medium',
               'transition-colors duration-150',
               active
                 ? 'text-foreground'

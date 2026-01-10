@@ -1,11 +1,14 @@
-import React from 'react'
+import * as React from 'react'
 
 import { Checkbox } from '@/components/ui/checkbox'
-import { BaseInput } from '../components/BaseInput'
-import { PasswordInput } from '../components/PasswordInput'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+
 import { AuthFormData } from '../interfaces/auth-form.types'
 import { GoogleLoginButton } from '../components/GoogleLoginButton'
 import { GithubLoginButton } from '../components/GithubLoginButton'
+import { Separator } from '@/components/ui/separator'
 
 interface LoginFormProps {
   formData: AuthFormData
@@ -18,46 +21,47 @@ export function LoginForm({
   setFormData,
   handleLogin
 }: LoginFormProps) {
-  function handleSubmit(event: React.FormEvent) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     handleLogin(formData)
   }
 
   return (
-    <div className="mx-auto w-full max-w-sm space-y-12">
+    <section className="flex h-full w-full flex-col justify-center gap-8">
       {/* Header */}
-      <header className="space-y-4 text-center">
+      <header className="space-y-2 text-center">
         <h1 className="font-serif text-4xl tracking-tight">
           Bienvenido de vuelta
         </h1>
-        <p className="text-muted-foreground text-sm leading-relaxed">
-          Ingresa tu correo y contraseña para acceder a tu cuenta
-        </p>
       </header>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Inputs */}
-        <div className="space-y-6">
-          <BaseInput
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Email */}
+        <div className="space-y-2">
+          <Label htmlFor="email">Correo electrónico</Label>
+          <Input
             id="email"
-            label="Correo electrónico"
             type="email"
             autoComplete="email"
             required
             value={formData.email}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setFormData((prev) => ({ ...prev, email: e.target.value }))
             }
           />
+        </div>
 
-          <PasswordInput
+        {/* Password */}
+        <div className="space-y-2">
+          <Label htmlFor="password">Contraseña</Label>
+          <Input
             id="password"
-            label="Contraseña"
+            type="password"
             autoComplete="current-password"
             required
             value={formData.password}
-            onChange={(e) =>
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
               setFormData((prev) => ({ ...prev, password: e.target.value }))
             }
           />
@@ -65,49 +69,52 @@ export function LoginForm({
 
         {/* Remember + Forgot */}
         <div className="flex items-center justify-between">
-          <label
-            htmlFor="remember"
-            className="text-muted-foreground flex items-center gap-2 text-sm select-none"
-          >
+          <div className="flex items-center gap-2">
             <Checkbox
               id="remember"
               checked={formData.remember}
-              onChange={(e) =>
+              onCheckedChange={(checked) =>
                 setFormData((prev) => ({
                   ...prev,
-                  remember: e.target.checked
+                  remember: checked === true
                 }))
               }
             />
-            Recuérdame
-          </label>
+            <Label
+              htmlFor="remember"
+              className="text-muted-foreground text-sm select-none"
+            >
+              Recuérdame
+            </Label>
+          </div>
 
           <button
             type="button"
-            className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+            className="text-muted-foreground hover:text-foreground text-sm"
           >
             ¿Olvidaste tu contraseña?
           </button>
         </div>
 
-        {/* CTA */}
-        <button
-          type="submit"
-          className="bg-foreground text-background w-full rounded-lg py-3 text-sm font-medium shadow-[0_6px_16px_-8px_rgb(0_0_0/0.45)] transition-shadow duration-150 hover:shadow-[0_10px_24px_-10px_rgb(0_0_0/0.55)]"
-        >
+        {/* Submit */}
+        <Button type="submit" className="w-full">
           Iniciar sesión
-        </button>
+        </Button>
       </form>
-      <GoogleLoginButton
-        onClick={() => {
-          /* google auth */
-        }}
-      />
-      <GithubLoginButton
-        onClick={() => {
-          /* github auth */
-        }}
-      />
-    </div>
+
+      {/* Separator */}
+      <div className="relative">
+        <Separator />
+        <span className="bg-background text-muted-foreground absolute inset-x-0 -top-2 mx-auto w-fit px-2 text-xs">
+          o continúa con
+        </span>
+      </div>
+
+      {/* OAuth */}
+      <div className="space-y-2">
+        <GoogleLoginButton onClick={() => {}} />
+        <GithubLoginButton onClick={() => {}} />
+      </div>
+    </section>
   )
 }

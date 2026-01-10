@@ -9,10 +9,7 @@ import { LoginForm } from './forms/LoginForm'
 import { RegisterForm } from './forms/RegisterForm'
 
 import { AuthFormData } from './interfaces/auth-form.types'
-import { Button } from '@/components/ui/button'
-import { BookOpenCheck, LogIn } from 'lucide-react'
-import { AuthModeToggle } from '../components/AuthModeToggle'
-import { AuthModeToggleSlider } from '../components/AuthModeToggleSlider'
+
 import { SliderToggle } from '../components/slider-toggle/SliderToggle'
 import { SliderToggleElevated } from '../components/slider-toggle/variants/SliderToggleElevated'
 
@@ -47,19 +44,6 @@ export function AuthPanel() {
 
   return (
     <section className="bg-background flex flex-1 flex-col overflow-hidden rounded-2xl px-3 py-5 shadow-xl">
-      {/* Boton de intercambio de opcion */}
-      {/* <AuthModeToggle value={authMode} onChange={setAuthMode} /> */}
-      {/* <AuthModeToggleSlider value={authMode} onChange={setAuthMode} /> */}
-
-      {/* <SliderToggle<'login' | 'signup'>
-        value={authMode}
-        onChange={setAuthMode}
-        options={[
-          { value: 'login', label: 'Iniciar sesión' },
-          { value: 'signup', label: 'Registrarme' }
-        ]}
-      /> */}
-
       <SliderToggleElevated<'login' | 'signup'>
         value={authMode}
         onChange={setAuthMode}
@@ -69,17 +53,8 @@ export function AuthPanel() {
         ]}
       />
 
-      {/* <SliderToggleReactive<'login' | 'signup'>
-        value={authMode}
-        onChange={setAuthMode}
-        options={[
-          { value: 'login', label: 'Iniciar sesión' },
-          { value: 'signup', label: 'Registrarme' }
-        ]}
-      /> */}
-
       {/* Formularios */}
-      <section>
+      <section className="flex flex-1 px-3">
         {authMode === 'login' && (
           <LoginForm
             formData={formData}

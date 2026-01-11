@@ -32,6 +32,16 @@ export interface AuthorProfile {
   location: string
 }
 
+export interface AuthorIndexItem {
+  profile: AuthorProfile
+  totalBooks: number
+  earliestYear: number
+  latestYear: number
+  categories: string[]
+  highlightedGenres: string[]
+  latestTitle: string
+}
+
 export interface AuthorDetail {
   profile: AuthorProfile
   categories: string[]
@@ -261,4 +271,52 @@ export async function fetchAuthorSlugs() {
     )
   )
   return Array.from(slugs).map((slug) => ({ slug }))
+}
+
+function getTopGenres(books: Book[], limit = 3) {
+  const counts = new Map<string, number>()
+  books.forEach((book) => {
+    counts.set(book.genre, (counts.get(book.genre) ?? 0) + 1)
+  })
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([genre]) => genre)
+}
+
+export async function fetchAuthorsIndex(): Promise<AuthorIndexItem[]> {
+  const data = await fetchBooks()
+  const grouped = new Map<string, Book[]>()
+
+  ;[...data.library, ...data.recommended].forEach((book) => {
+    const slug = getAuthorSlug(book.author)
+    const existing = grouped.get(slug)
+    if (existing) {
+      existing.push(book)
+    } else {
+      grouped.set(slug, [book])
+    }
+  })
+
+  return Array.from(grouped.entries()).map(([slug, books]) => {
+    const years = books.map((book) => book.publicationYear)
+    const earliestYear = Math.min(...years)
+    const latestYear = Math.max(...years)
+    const latestBook = books.reduce((current, book) =>
+      book.publicationYear > current.publicationYear ? book : current
+    )
+    const categories = Array.from(
+      new Set(books.flatMap((book) => book.categories))
+    )
+
+    return {
+      profile: getProfile(books[0].author, slug),
+      totalBooks: books.length,
+      earliestYear,
+      latestYear,
+      categories,
+      highlightedGenres: getTopGenres(books),
+      latestTitle: latestBook.title
+    }
+  })
 }

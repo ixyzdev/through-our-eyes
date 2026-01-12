@@ -1,0 +1,25 @@
+@layer base {
+  :root {
+    /* Brand – hex */
+    --brand-red: #d90452;
+    --brand-magenta: #bf045b;
+    --brand-ink: #303440;
+    --brand-amber: #d98d62;
+    --brand-rose: #d95555;
+
+    /* Brand – OKLCH */
+    --brand-red-oklch: oklch(0.55 0.23 25);
+    --brand-magenta-oklch: oklch(0.52 0.25 350);
+    --brand-ink-oklch: oklch(0.28 0.03 265);
+    --brand-amber-oklch: oklch(0.72 0.14 55);
+    --brand-rose-oklch: oklch(0.6 0.18 20);
+  }
+
+  .dark {
+    --brand-red-oklch: oklch(0.62 0.24 25);
+    --brand-magenta-oklch: oklch(0.6 0.26 350);
+    --brand-ink-oklch: oklch(0.92 0.01 265);
+    --brand-amber-oklch: oklch(0.78 0.16 55);
+    --brand-rose-oklch: oklch(0.66 0.2 20);
+  }
+}

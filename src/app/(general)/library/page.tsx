@@ -115,7 +115,7 @@ function BookCard({
           <div className="absolute top-3 right-3 flex flex-col gap-2 opacity-0 transition duration-300 group-hover:opacity-100">
             <Link
               href={`/library/${book.id}/read`}
-              className="rounded-full bg-primary px-3 py-1 text-[11px] font-semibold tracking-wide text-white uppercase transition hover:bg-primary/90"
+              className="bg-primary hover:bg-primary/90 rounded-full px-3 py-1 text-[11px] font-semibold tracking-wide text-white uppercase transition"
               onClick={(event) => event.stopPropagation()}
             >
               Leer ahora
@@ -218,8 +218,7 @@ export default function LibraryPage() {
   )
 
   return (
-    <div className="text-foreground relative min-h-screen overflow-hidden bg-gradient-to-b from-amber-50 via-white to-blue-50 antialiased dark:from-zinc-950 dark:via-zinc-900 dark:to-black">
-      <div className="from-primary/15 pointer-events-none absolute inset-x-0 top-0 h-72 bg-gradient-to-b via-transparent to-transparent blur-3xl" />
+    <div className="text-foreground relative min-h-screen overflow-hidden">
       <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-10 lg:px-8">
         <header className="border-border/70 bg-card/90 flex flex-col gap-4 rounded-3xl border p-6 shadow-[0_20px_80px_-40px_rgb(15,23,42,0.35)] backdrop-blur">
           <div className="flex flex-wrap items-center justify-between gap-4">

@@ -14,7 +14,7 @@ export default function AuthOnlyLayout({
 
   useEffect(() => {
     if (!loading && user) {
-      router.replace('/')
+      router.replace('/home')
     }
   }, [loading, user, router])
 

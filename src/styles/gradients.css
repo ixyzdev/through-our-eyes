@@ -1,0 +1,25 @@
+@layer utilities {
+  .gradient-brand {
+    background: linear-gradient(
+      135deg,
+      var(--brand-red),
+      var(--brand-magenta)
+    );
+  }
+
+  .gradient-brand-soft {
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--brand-amber-oklch) 25%, white),
+      white
+    );
+  }
+
+  .dark .gradient-brand-soft {
+    background: linear-gradient(
+      180deg,
+      color-mix(in oklch, var(--brand-amber-oklch) 20%, black),
+      black
+    );
+  }
+}

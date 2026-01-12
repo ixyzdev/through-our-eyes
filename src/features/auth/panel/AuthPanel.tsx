@@ -1,115 +1,29 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
-import { account, ID } from '@/lib/appwrite/client'
-// import { awUser } from '@/lib/appwrite/interfaces/appwrite.interface'
+import { SliderToggle } from '@/components/slider-toggle/SliderToggle'
+import { InlineNotification } from '@/components/inline-notification/InlineNotification'
 
 import { LoginForm } from './forms/LoginForm'
 import { RegisterForm } from './forms/RegisterForm'
 
-import { AuthFormData } from './interfaces/auth-form.types'
+import { useAuthPanel } from './hooks/useAuthPanel'
+import { useAuthFormState } from './hooks/useAuthFormState'
+import { AuthMode } from './interfaces/auth-panel.types'
 
-import { SliderToggleElevated } from '../components/slider-toggle/variants/SliderToggleElevated'
-
-import { Models } from 'appwrite'
-
-import { useRouter } from 'next/navigation'
-
-import { useAuth } from '@/providers/AuthProvider'
-
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert'
-
-import { InlineNotification } from '../components/InlineNotification'
-
-type AuthMode = 'login' | 'signup'
-
-type AuthError = {
-  title: string
-  message: string
-}
+const AUTH_MODES = ['login', 'signup'] as const
 
 export function AuthPanel() {
+  const { authError, setAuthError, actions } = useAuthPanel()
+
+  const { formData, setFormData } = useAuthFormState()
+
   const [authMode, setAuthMode] = useState<AuthMode>('login')
-
-  const [authError, setAuthError] = useState<AuthError | null>(null)
-
-  const router = useRouter()
-
-  const { refresh } = useAuth()
-
-  // * Estados para los atributos del usuario
-  const [formData, setFormData] = useState<AuthFormData>({
-    email: '',
-    name: '',
-    password: '',
-    remember: false
-  })
-
-  useEffect(() => {
-    console.log(formData)
-
-    // return () => {}
-  }, [formData])
-
-  const onModeChange = (authMode: AuthMode) => {
-    setAuthMode(authMode)
-  }
-
-  const [user, setUser] = useState<Models.User | null>(null)
-
-  async function handleLogin(formData: AuthFormData) {
-    try {
-      setAuthError(null)
-
-      await account.createEmailPasswordSession({
-        email: formData.email,
-        password: formData.password
-      })
-
-      await refresh()
-      router.replace('/')
-    } catch (error: any) {
-      setAuthError({
-        title: 'Error al iniciar sesión',
-        message:
-          error?.message ??
-          'Las credenciales no son válidas o ocurrió un problema inesperado.'
-      })
-    }
-  }
-
-  async function handleRegister(formData: AuthFormData) {
-    try {
-      setAuthError(null)
-
-      await account.create({
-        userId: ID.unique(),
-        email: formData.email,
-        password: formData.password,
-        name: formData.name
-      })
-
-      await account.createEmailPasswordSession({
-        email: formData.email,
-        password: formData.password
-      })
-
-      await refresh()
-      router.replace('/')
-    } catch (error: any) {
-      setAuthError({
-        title: 'Error al registrarse',
-        message:
-          error?.message ??
-          'No fue posible crear la cuenta. Verifica los datos ingresados.'
-      })
-    }
-  }
 
   return (
     <section className="bg-background flex flex-1 flex-col overflow-hidden rounded-2xl px-3 py-5 shadow-xl">
-      <SliderToggleElevated<'login' | 'signup'>
+      <SliderToggle<'login' | 'signup'>
         value={authMode}
         onChange={setAuthMode}
         options={[
@@ -118,13 +32,15 @@ export function AuthPanel() {
         ]}
       />
 
-      {/* Formularios */}
       <section className="flex flex-1 px-3">
         {authMode === 'login' && (
           <LoginForm
             formData={formData}
             setFormData={setFormData}
-            handleLogin={handleLogin}
+            handleLogin={async (data) => {
+              const error = await actions.login(data)
+              setAuthError(error)
+            }}
           />
         )}
 
@@ -132,7 +48,10 @@ export function AuthPanel() {
           <RegisterForm
             formData={formData}
             setFormData={setFormData}
-            handleRegister={handleRegister}
+            handleRegister={async (data) => {
+              const error = await actions.register(data)
+              setAuthError(error)
+            }}
           />
         )}
       </section>

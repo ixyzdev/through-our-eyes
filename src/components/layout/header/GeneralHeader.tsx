@@ -1,7 +1,9 @@
 'use client'
 
+// ! Problema para cerrar sesion con retraso
+
 import Link from 'next/link'
-import { BookOpen, LogOut, Settings, User } from 'lucide-react'
+import { BookMarked, LogOut, Settings, UserCircle2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -32,42 +34,28 @@ export const GeneralHeader = () => {
   }
 
   return (
-    <header className="flex items-center justify-between bg-white px-2 py-3.5 shadow-xl lg:px-8">
-      <Link href="/" className="flex items-center gap-3">
-        {/* <span className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-2xl">
-            <Eye className="h-5 w-5" aria-hidden="true" />
-          </span> */}
-        <span className="text-xl font-semibold">
-          <span className="">Through Our Eyes</span>
-        </span>
-      </Link>
+    <header className="flex items-center justify-between py-3.5">
+      <div className="flex flex-1"></div>
 
       <nav className="flex items-center gap-3">
         <GithubButton href="https://github.com/ixyzdev/through-our-eyes" />
-        {/* 
-          <Button
-            asChild
-            size="icon"
-            variant="outline"
-            className="text-muted-foreground hover:text-foreground"
-          ></Button> */}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button size="icon" variant="outline" aria-label="Navegación">
-              <User className="h-4 w-4" aria-hidden="true" />
+              <UserCircle2 className="h-4 w-4" aria-hidden="true" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuItem asChild>
               <Link href="/profile" aria-label="Perfil de usuario">
-                <User className="h-4 w-4" aria-hidden="true" />
+                <UserCircle2 className="h-4 w-4" aria-hidden="true" />
                 Perfil
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href="/library" className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4" aria-hidden="true" />
+                <BookMarked className="h-4 w-4" aria-hidden="true" />
                 Biblioteca
               </Link>
             </DropdownMenuItem>
@@ -86,7 +74,6 @@ export const GeneralHeader = () => {
                   onClick={handleLogout}
                   className="flex items-center gap-2"
                 >
-                  <LogOut className="h-4 w-4" aria-hidden="true" />
                   Cerrar sesión
                 </button>
               </Link>

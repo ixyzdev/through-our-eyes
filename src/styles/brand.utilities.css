@@ -1,0 +1,49 @@
+@layer utilities {
+  /* ===== BACKGROUNDS ===== */
+  .bg-brand-red { background-color: var(--brand-red-oklch); }
+  .bg-brand-magenta { background-color: var(--brand-magenta-oklch); }
+  .bg-brand-ink { background-color: var(--brand-ink-oklch); }
+  .bg-brand-amber { background-color: var(--brand-amber-oklch); }
+  .bg-brand-rose { background-color: var(--brand-rose-oklch); }
+
+  /* Soft variants */
+  .bg-brand-red-soft {
+    background-color: color-mix(in oklch, var(--brand-red-oklch) 18%, transparent);
+  }
+  .bg-brand-amber-soft {
+    background-color: color-mix(in oklch, var(--brand-amber-oklch) 20%, transparent);
+  }
+  .bg-brand-magenta-soft {
+    background-color: color-mix(in oklch, var(--brand-magenta-oklch) 16%, transparent);
+  }
+
+  /* ===== TEXT ===== */
+  .text-brand-red { color: var(--brand-red); }
+  .text-brand-magenta { color: var(--brand-magenta); }
+  .text-brand-ink { color: var(--brand-ink); }
+  .text-brand-amber { color: var(--brand-amber); }
+  .text-brand-rose { color: var(--brand-rose); }
+
+  /* ===== BORDERS ===== */
+  .border-brand-red { border-color: var(--brand-red-oklch); }
+  .border-brand-magenta { border-color: var(--brand-magenta-oklch); }
+  .border-brand-ink { border-color: var(--brand-ink-oklch); }
+  .border-brand-amber { border-color: var(--brand-amber-oklch); }
+  .border-brand-rose { border-color: var(--brand-rose-oklch); }
+
+  /* ===== RINGS ===== */
+  .ring-brand-red { --tw-ring-color: var(--brand-red); }
+  .ring-brand-magenta { --tw-ring-color: var(--brand-magenta); }
+  .ring-brand-ink { --tw-ring-color: var(--brand-ink); }
+  .ring-brand-amber { --tw-ring-color: var(--brand-amber); }
+  .ring-brand-rose { --tw-ring-color: var(--brand-rose); }
+
+  /* ===== GRADIENTS ===== */
+  .from-brand-red { --tw-gradient-from: var(--brand-red) var(--tw-gradient-from-position); }
+  .from-brand-magenta { --tw-gradient-from: var(--brand-magenta) var(--tw-gradient-from-position); }
+  .from-brand-amber { --tw-gradient-from: var(--brand-amber) var(--tw-gradient-from-position); }
+
+  .to-brand-red { --tw-gradient-to: var(--brand-red) var(--tw-gradient-to-position); }
+  .to-brand-magenta { --tw-gradient-to: var(--brand-magenta) var(--tw-gradient-to-position); }
+  .to-brand-amber { --tw-gradient-to: var(--brand-amber) var(--tw-gradient-to-position); }
+}

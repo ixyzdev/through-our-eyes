@@ -1,0 +1,28 @@
+@layer utilities {
+  .state-danger {
+    color: var(--brand-red);
+    background: color-mix(
+      in oklch,
+      var(--brand-red-oklch) 14%,
+      transparent
+    );
+  }
+
+  .state-warning {
+    color: var(--brand-amber);
+    background: color-mix(
+      in oklch,
+      var(--brand-amber-oklch) 18%,
+      transparent
+    );
+  }
+
+  .state-info {
+    color: var(--brand-magenta);
+    background: color-mix(
+      in oklch,
+      var(--brand-magenta-oklch) 14%,
+      transparent
+    );
+  }
+}

@@ -6,8 +6,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 import { AuthFormData } from '../interfaces/auth-form.types'
-import { GoogleLoginButton } from '../components/GoogleLoginButton'
-import { GithubLoginButton } from '../components/GithubLoginButton'
+import { GoogleLoginButton } from '../components/oauth/GoogleLoginButton'
+import { GithubLoginButton } from '../components/oauth/GithubLoginButton'
 import { Separator } from '@/components/ui/separator'
 
 interface LoginFormProps {

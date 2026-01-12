@@ -1,0 +1,13 @@
+@layer utilities {
+  .text-brand {
+    color: var(--brand-red);
+  }
+
+  .ring-brand {
+    --tw-ring-color: var(--brand-magenta);
+  }
+
+  .border-brand {
+    border-color: var(--brand-ink-oklch);
+  }
+}

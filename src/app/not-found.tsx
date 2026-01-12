@@ -18,13 +18,13 @@ export default function NotFound() {
           Esta página se perdió entre las páginas.
         </h1>
         <p className="text-muted-foreground mt-4 max-w-2xl text-base sm:text-lg">
-          No pudimos encontrar la vista que buscas. Puedes volver al inicio, ir a
-          tu biblioteca o seguir explorando autores destacados.
+          No pudimos encontrar la vista que buscas. Puedes volver al inicio, ir
+          a tu biblioteca o seguir explorando autores destacados.
         </p>
 
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Button asChild className="gap-2">
-            <Link href="/">
+            <Link href="/home">
               <Compass className="h-4 w-4" />
               Volver al inicio
             </Link>
@@ -39,13 +39,21 @@ export default function NotFound() {
 
         <Card className="border-border/70 bg-card/90 mt-12 w-full max-w-2xl p-6 text-left shadow-sm backdrop-blur">
           <div className="space-y-2">
-            <p className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            <p className="text-muted-foreground text-sm font-semibold tracking-wide uppercase">
               Sugerencias rápidas
             </p>
             <ul className="text-muted-foreground space-y-2 text-sm">
-              <li>• Revisa la URL o vuelve a intentar desde el menú principal.</li>
-              <li>• Si llegaste desde una recomendación, guarda la lectura y vuelve más tarde.</li>
-              <li>• ¿Necesitas ayuda? Escríbenos desde el perfil para corregir el enlace.</li>
+              <li>
+                • Revisa la URL o vuelve a intentar desde el menú principal.
+              </li>
+              <li>
+                • Si llegaste desde una recomendación, guarda la lectura y
+                vuelve más tarde.
+              </li>
+              <li>
+                • ¿Necesitas ayuda? Escríbenos desde el perfil para corregir el
+                enlace.
+              </li>
             </ul>
           </div>
         </Card>

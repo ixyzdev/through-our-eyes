@@ -1,5 +1,6 @@
-import { awUser } from '@/lib/appwrite/interfaces/appwrite.interface'
-
-export interface AuthFormData extends Omit<awUser, 'userId'> {
+export type AuthFormData = {
+  email: string
+  name: string
+  password: string
   remember: boolean
 }
